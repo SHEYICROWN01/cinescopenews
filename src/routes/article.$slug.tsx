@@ -37,7 +37,7 @@ export const Route = createFileRoute("/article/$slug")({
 });
 
 function ArticlePage() {
-  const { article } = Route.useLoaderData();
+  const { article } = Route.useLoaderData() as { article: ReturnType<typeof getArticle> & {} };
   const rel = related(article.slug, article.categorySlug);
   const [progress, setProgress] = useState(0);
 
