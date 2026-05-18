@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getArticle, related, ARTICLES } from "@/lib/news-data";
+import { getArticle, related, ARTICLES, type Article } from "@/lib/news-data";
 import { ArticleCard, NumberedItem } from "@/components/site/ArticleCard";
 import { NewsletterCard } from "@/components/site/NewsletterCard";
 import { Twitter, Facebook, Linkedin, Link2, Bookmark, MessageCircle } from "lucide-react";
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/article/$slug")({
 });
 
 function ArticlePage() {
-  const { article } = Route.useLoaderData() as { article: ReturnType<typeof getArticle> & {} };
+  const { article } = Route.useLoaderData() as { article: Article };
   const rel = related(article.slug, article.categorySlug);
   const [progress, setProgress] = useState(0);
 
