@@ -218,8 +218,6 @@ function ArticlePage() {
                   {ARTICLES.slice(0, 5).map((a, i) => <NumberedItem key={a.slug} article={a} index={i} />)}
                 </div>
               </div>
-              <NewsletterCard />
-              </div>
               <AdSlot format="mpu" />
               <NewsletterCard />
               <AdSlot format="half-page" />
