@@ -38,9 +38,10 @@
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
 
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-serif: "Lora", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Fraunces", "Playfair Display", Georgia, serif;
+  --font-editorial: "Instrument Serif", Georgia, serif;
+  --font-serif: "Source Serif 4", "Lora", Georgia, serif;
+  --font-sans: "Inter Tight", "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --shadow-card: 0 1px 2px rgb(17 24 39 / 0.04), 0 8px 24px -12px rgb(17 24 39 / 0.08);
@@ -140,7 +141,8 @@
   }
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display);
-    letter-spacing: -0.015em;
+    letter-spacing: -0.022em;
+    font-variation-settings: "opsz" 144, "SOFT" 30;
   }
   ::selection {
     background: color-mix(in oklab, var(--brand) 25%, transparent);
@@ -148,7 +150,8 @@
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); }
+  .font-display { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 30; }
+  .font-editorial { font-family: var(--font-editorial); font-weight: 400; letter-spacing: -0.01em; }
   .font-serif-body { font-family: var(--font-serif); }
   .font-mono { font-family: var(--font-mono); }
   .text-ink { color: var(--ink); }

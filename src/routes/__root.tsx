@@ -11,7 +11,9 @@ import {
 import appCss from "../styles.css?url";
 import { Header } from "@/components/site/Header";
 import { BreakingTicker } from "@/components/site/BreakingTicker";
+import { MarketTicker } from "@/components/site/MarketTicker";
 import { Footer } from "@/components/site/Footer";
+import { AdSlot } from "@/components/site/AdSlot";
 
 function NotFoundComponent() {
   return (
@@ -89,8 +91,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Instrument+Serif:ital@0;1&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter+Tight:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap",
       },
+    ],
+    scripts: [
+      // Google AdSense — wire your publisher ID (ca-pub-XXXX) below to activate.
+      // Until then, AdSlot components render tasteful placeholders in-place.
+      // {
+      //   src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX",
+      //   async: true,
+      //   crossOrigin: "anonymous",
+      // },
     ],
   }),
   shellComponent: RootShell,
@@ -120,10 +131,16 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen flex flex-col bg-background text-ink">
         <BreakingTicker />
+        <MarketTicker />
         <Header />
         <main className="flex-1">
           <Outlet />
         </main>
+        <div className="border-t border-rule bg-surface/40">
+          <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-4">
+            <AdSlot format="leaderboard" label />
+          </div>
+        </div>
         <Footer />
       </div>
     </QueryClientProvider>
