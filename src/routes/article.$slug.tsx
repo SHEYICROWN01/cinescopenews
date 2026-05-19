@@ -157,10 +157,23 @@ function ArticlePage() {
             </div>
 
             {/* Ad */}
-            <div className="my-14 border border-dashed border-rule p-10 text-center">
-              <p className="eyebrow text-ink-muted mb-2">Advertisement</p>
-              <p className="font-display text-xl font-bold">728 × 90 Leaderboard</p>
-            </div>
+            <AdSlot format="in-article" className="my-12" />
+
+            {/* Prev / Next */}
+            <nav className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12 mb-4">
+              {prev ? (
+                <Link to="/article/$slug" params={{ slug: prev.slug }} className="group border border-rule p-5 hover:border-ink transition-colors">
+                  <span className="eyebrow text-ink-muted flex items-center gap-2 mb-2"><ArrowLeft size={11} /> Previous</span>
+                  <p className="font-display text-lg font-bold leading-tight group-hover:text-brand transition-colors">{prev.title}</p>
+                </Link>
+              ) : <div />}
+              {next ? (
+                <Link to="/article/$slug" params={{ slug: next.slug }} className="group border border-rule p-5 hover:border-ink transition-colors text-right">
+                  <span className="eyebrow text-ink-muted flex items-center justify-end gap-2 mb-2">Next <ArrowRight size={11} /></span>
+                  <p className="font-display text-lg font-bold leading-tight group-hover:text-brand transition-colors">{next.title}</p>
+                </Link>
+              ) : <div />}
+            </nav>
 
             {/* Comments */}
             <section className="mt-12">
@@ -206,6 +219,10 @@ function ArticlePage() {
                 </div>
               </div>
               <NewsletterCard />
+              </div>
+              <AdSlot format="mpu" />
+              <NewsletterCard />
+              <AdSlot format="half-page" />
             </div>
           </aside>
         </div>
