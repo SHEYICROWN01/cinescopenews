@@ -15,7 +15,7 @@ export function Header() {
     <>
       {/* Top meta bar */}
       <div className="hidden md:block border-b border-rule bg-background">
-        <div className="max-w-[1400px] mx-auto px-6 h-9 flex justify-between items-center eyebrow text-ink-muted">
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-10 h-9 flex justify-between items-center eyebrow text-ink-muted">
           <div className="flex gap-6">
             <span>Lagos, Nigeria</span>
             <span>{new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</span>
@@ -30,7 +30,7 @@ export function Header() {
 
       {/* Main header */}
       <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-rule">
-        <div className="max-w-[1400px] mx-auto px-6 h-20 flex justify-between items-center gap-6">
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-10 h-20 flex justify-between items-center gap-6">
           <div className="flex items-center gap-4 lg:gap-8 flex-1">
             <button
               onClick={() => setOpen(!open)}
