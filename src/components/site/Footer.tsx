@@ -5,7 +5,7 @@ import { CATEGORIES } from "@/lib/news-data";
 export function Footer() {
   return (
     <footer className="bg-ink text-background mt-24">
-      <div className="max-w-[1400px] mx-auto px-6 pt-20 pb-10">
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-10 pt-20 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-16 border-b border-white/10">
           <div className="md:col-span-4">
             <Link to="/">
