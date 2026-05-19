@@ -2,7 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getArticle, related, ARTICLES, type Article } from "@/lib/news-data";
 import { ArticleCard, NumberedItem } from "@/components/site/ArticleCard";
 import { NewsletterCard } from "@/components/site/NewsletterCard";
-import { Twitter, Facebook, Linkedin, Link2, Bookmark, MessageCircle } from "lucide-react";
+import { AdSlot } from "@/components/site/AdSlot";
+import { Twitter, Facebook, Linkedin, Link2, Bookmark, MessageCircle, ChevronRight, ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/article/$slug")({
@@ -40,6 +41,9 @@ function ArticlePage() {
   const { article } = Route.useLoaderData() as { article: Article };
   const rel = related(article.slug, article.categorySlug);
   const [progress, setProgress] = useState(0);
+  const idx = ARTICLES.findIndex((a) => a.slug === article.slug);
+  const prev = idx > 0 ? ARTICLES[idx - 1] : null;
+  const next = idx < ARTICLES.length - 1 ? ARTICLES[idx + 1] : null;
 
   useEffect(() => {
     const handler = () => {
@@ -59,16 +63,25 @@ function ArticlePage() {
         <div className="h-full bg-brand transition-[width] duration-100" style={{ width: `${progress}%` }} />
       </div>
 
-      <article className="max-w-[1400px] mx-auto px-6 py-12 md:py-16">
+      <article className="max-w-[1600px] mx-auto px-6 lg:px-10 py-10 md:py-14">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-xs eyebrow text-ink-muted mb-10 max-w-3xl mx-auto">
+          <Link to="/" className="hover:text-brand">Home</Link>
+          <ChevronRight size={11} />
+          <Link to="/category/$slug" params={{ slug: article.categorySlug }} className="hover:text-brand">{article.category}</Link>
+          <ChevronRight size={11} />
+          <span className="truncate">{article.title}</span>
+        </nav>
+
         {/* Header */}
-        <header className="max-w-3xl mx-auto text-center mb-10">
+        <header className="max-w-3xl mx-auto text-center mb-12">
           <Link to="/category/$slug" params={{ slug: article.categorySlug }} className="eyebrow text-brand hover:underline">
             {article.category}
           </Link>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.05] text-balance mt-5 mb-6">
+          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-black tracking-[-0.03em] leading-[0.98] text-balance mt-6 mb-7">
             {article.title}
           </h1>
-          <p className="font-serif-body text-xl text-ink-muted leading-relaxed mb-8">
+          <p className="font-editorial text-2xl md:text-3xl text-ink-muted leading-[1.3] mb-10">
             {article.excerpt}
           </p>
           <div className="flex items-center justify-center gap-3">
