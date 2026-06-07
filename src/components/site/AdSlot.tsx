@@ -1,16 +1,5 @@
 import { useEffect, useRef } from "react";
-
-/**
- * Google AdSense / Ad Manager slot.
- *
- * SETUP (one time):
- *   1. Get your AdSense publisher ID (ca-pub-XXXXXXXXXXXXXXXX)
- *   2. Set it in src/routes/__root.tsx where the AdSense script tag is configured
- *   3. Create ad units in your AdSense dashboard, copy the data-ad-slot IDs
- *   4. Pass each slot ID as the `slot` prop below
- *
- * Until a publisher ID is wired in, a tasteful placeholder renders in its place.
- */
+import { ADSENSE_CLIENT } from "@/lib/ads";
 
 type AdFormat =
   | "leaderboard"      // 728x90 / responsive top banner
@@ -41,13 +30,14 @@ export function AdSlot({
   className = "",
 }: {
   format?: AdFormat;
-  slot?: string;            // data-ad-slot
-  client?: string;          // data-ad-client (ca-pub-XXXX)
+  slot?: string;
+  client?: string;
   label?: boolean;
   className?: string;
 }) {
   const ref = useRef<HTMLModElement>(null);
-  const live = Boolean(slot && client);
+  const resolvedClient = client || ADSENSE_CLIENT;
+  const live = Boolean(slot && resolvedClient);
   const size = SIZES[format];
 
   useEffect(() => {
@@ -74,7 +64,7 @@ export function AdSlot({
           ref={ref as any}
           className={`adsbygoogle block ${size.className}`}
           style={{ display: "block" }}
-          data-ad-client={client}
+          data-ad-client={resolvedClient}
           data-ad-slot={slot}
           data-ad-format={format === "in-article" ? "fluid" : "auto"}
           data-ad-layout={format === "in-article" ? "in-article" : undefined}

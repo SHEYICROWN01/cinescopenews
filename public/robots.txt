@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /management-portal/
 
-Sitemap: /sitemap.xml
+Sitemap: https://www.dailynewstap.com/sitemap.xml
+

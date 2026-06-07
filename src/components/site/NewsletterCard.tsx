@@ -1,32 +1,51 @@
+/* Cinescope Global Concept — sidebar newsletter widget */
 export function NewsletterCard({ variant = "light" }: { variant?: "light" | "dark" }) {
   const dark = variant === "dark";
+
   return (
     <div
-      className={`p-7 ${
-        dark ? "bg-ink text-background" : "bg-surface text-ink border border-rule"
+      className={`p-5 sm:p-8 border-l-4 ${
+        dark
+          ? "bg-[#0A0A0A] text-white border-lime"
+          : "bg-surface text-ink border-brand"
       }`}
     >
-      <h4 className="font-display text-2xl font-black mb-3">The Morning Tap</h4>
-      <p className={`text-xs leading-relaxed mb-5 ${dark ? "text-background/65" : "text-ink-muted"}`}>
-        The intelligence you need to start your day. Curated by our editors,
-        delivered to your inbox at 6:00 AM daily.
+      <div className="mb-4">
+        <div
+          className="inline-block eyebrow px-2 py-1 mb-3 text-[10px] tracking-widest"
+          style={{
+            backgroundColor: "var(--lime)",
+            color: "var(--lime-foreground)",
+          }}
+        >
+          Daily Briefing
+        </div>
+      </div>
+      <h4 className="font-display text-xl font-black mb-3 leading-tight">
+        The Cinescope<br />
+        <span style={{ color: "var(--accent-red)" }}>Global Briefing</span>
+      </h4>
+      <p className={`text-sm leading-relaxed mb-6 ${dark ? "text-white/70" : "text-ink-muted"}`}>
+        Sharp global intelligence curated by our editors —
+        delivered to your inbox every morning, six days a week.
       </p>
-      <form className="flex flex-col gap-2" onSubmit={(e) => e.preventDefault()}>
+      <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
         <input
           type="email"
           required
           placeholder="Your email address"
-          className={`px-4 py-2.5 text-sm outline-none transition-shadow ${
+          className={`px-4 py-3 text-sm outline-none transition-colors border ${
             dark
-              ? "bg-background/10 border border-background/15 text-background placeholder:text-background/40 focus:border-background/40"
-              : "bg-background border border-rule focus:border-brand"
+              ? "bg-white/8 border-white/20 text-white placeholder:text-white/40 focus:border-lime"
+              : "bg-background border-rule focus:border-brand"
           }`}
         />
         <button
           type="submit"
-          className="bg-brand text-brand-foreground text-xs font-bold uppercase tracking-widest py-3 hover:opacity-90 transition-opacity"
+          className="text-brand-foreground text-xs font-bold uppercase tracking-widest py-3 hover:opacity-90 transition-opacity"
+          style={{ backgroundColor: "var(--lime)", color: "var(--lime-foreground)" }}
         >
-          Subscribe Now
+          Subscribe Free →
         </button>
       </form>
     </div>

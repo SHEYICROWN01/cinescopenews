@@ -30,10 +30,10 @@ export const CATEGORIES = [
 
 const lorem = [
   "In a development that has reverberated across the corridors of power, sources close to the matter have confirmed a series of high-level discussions aimed at recalibrating policy frameworks. Stakeholders gathered behind closed doors over the weekend, signalling the gravity of the issue at hand.",
-  "The implications extend far beyond the immediate parties involved. Analysts who spoke to DailyNewsTap on condition of anonymity described the situation as a defining moment, one that will likely shape the contours of the national conversation in the months ahead.",
+  "The implications extend far beyond the immediate parties involved. Analysts who spoke to Cinescope Global Concept on condition of anonymity described the situation as a defining moment, one that will likely shape the contours of the national conversation in the months ahead.",
   "Speaking at a press briefing in Abuja, the lead spokesperson emphasised that transparency would remain central to all proceedings. \"We are committed to ensuring that every stakeholder is heard,\" he said, adding that consultations would continue through the next quarter.",
   "Critics, however, remain unconvinced. Civil society organisations have called for greater public participation, citing concerns about the pace and direction of the proposed reforms. A coalition of advocacy groups is expected to issue a formal response later this week.",
-  "As the situation evolves, observers will be watching closely. The next few weeks promise to be decisive, with announcements expected from both the executive and legislative arms. DailyNewsTap will continue to provide updates as they unfold.",
+  "As the situation evolves, observers will be watching closely. The next few weeks promise to be decisive, with announcements expected from both the executive and legislative arms. Cinescope Global Concept will continue to provide updates as they unfold.",
 ];
 
 export const ARTICLES: Article[] = [

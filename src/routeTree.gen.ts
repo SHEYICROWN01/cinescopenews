@@ -10,21 +10,52 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as FeedDotxmlRouteImport } from './routes/feed[.]xml'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ManagementPortalIndexRouteImport } from './routes/management-portal/index'
+import { Route as TagTagRouteImport } from './routes/tag.$tag'
+import { Route as ManagementPortalDashboardRouteImport } from './routes/management-portal/dashboard'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as AuthorSlugRouteImport } from './routes/author.$slug'
 import { Route as ArticleSlugRouteImport } from './routes/article.$slug'
+import { Route as ManagementPortalDashboardIndexRouteImport } from './routes/management-portal/dashboard/index'
+import { Route as ManagementPortalDashboardWeatherRouteImport } from './routes/management-portal/dashboard/weather'
+import { Route as ManagementPortalDashboardUsersRouteImport } from './routes/management-portal/dashboard/users'
+import { Route as ManagementPortalDashboardSettingsRouteImport } from './routes/management-portal/dashboard/settings'
+import { Route as ManagementPortalDashboardMediaRouteImport } from './routes/management-portal/dashboard/media'
+import { Route as ManagementPortalDashboardMarketRouteImport } from './routes/management-portal/dashboard/market'
+import { Route as ManagementPortalDashboardCommentsRouteImport } from './routes/management-portal/dashboard/comments'
+import { Route as ManagementPortalDashboardCategoriesRouteImport } from './routes/management-portal/dashboard/categories'
+import { Route as ManagementPortalDashboardArticlesRouteImport } from './routes/management-portal/dashboard/articles'
+import { Route as ManagementPortalDashboardAdsRouteImport } from './routes/management-portal/dashboard/ads'
+import { Route as ManagementPortalDashboardCategoriesIndexRouteImport } from './routes/management-portal/dashboard/categories/index'
+import { Route as ManagementPortalDashboardArticlesIndexRouteImport } from './routes/management-portal/dashboard/articles/index'
+import { Route as ManagementPortalDashboardCategoriesCreateRouteImport } from './routes/management-portal/dashboard/categories/create'
+import { Route as ManagementPortalDashboardArticlesCreateRouteImport } from './routes/management-portal/dashboard/articles/create'
+import { Route as ManagementPortalDashboardArticlesArticleIdRouteImport } from './routes/management-portal/dashboard/articles/$articleId'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedDotxmlRoute = FeedDotxmlRouteImport.update({
+  id: '/feed.xml',
+  path: '/feed.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -42,9 +73,30 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ManagementPortalIndexRoute = ManagementPortalIndexRouteImport.update({
+  id: '/management-portal/',
+  path: '/management-portal/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TagTagRoute = TagTagRouteImport.update({
+  id: '/tag/$tag',
+  path: '/tag/$tag',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManagementPortalDashboardRoute =
+  ManagementPortalDashboardRouteImport.update({
+    id: '/management-portal/dashboard',
+    path: '/management-portal/dashboard',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/category/$slug',
   path: '/category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthorSlugRoute = AuthorSlugRouteImport.update({
+  id: '/author/$slug',
+  path: '/author/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArticleSlugRoute = ArticleSlugRouteImport.update({
@@ -52,34 +104,184 @@ const ArticleSlugRoute = ArticleSlugRouteImport.update({
   path: '/article/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ManagementPortalDashboardIndexRoute =
+  ManagementPortalDashboardIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardWeatherRoute =
+  ManagementPortalDashboardWeatherRouteImport.update({
+    id: '/weather',
+    path: '/weather',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardUsersRoute =
+  ManagementPortalDashboardUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardSettingsRoute =
+  ManagementPortalDashboardSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardMediaRoute =
+  ManagementPortalDashboardMediaRouteImport.update({
+    id: '/media',
+    path: '/media',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardMarketRoute =
+  ManagementPortalDashboardMarketRouteImport.update({
+    id: '/market',
+    path: '/market',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardCommentsRoute =
+  ManagementPortalDashboardCommentsRouteImport.update({
+    id: '/comments',
+    path: '/comments',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardCategoriesRoute =
+  ManagementPortalDashboardCategoriesRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardArticlesRoute =
+  ManagementPortalDashboardArticlesRouteImport.update({
+    id: '/articles',
+    path: '/articles',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardAdsRoute =
+  ManagementPortalDashboardAdsRouteImport.update({
+    id: '/ads',
+    path: '/ads',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
+const ManagementPortalDashboardCategoriesIndexRoute =
+  ManagementPortalDashboardCategoriesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ManagementPortalDashboardCategoriesRoute,
+  } as any)
+const ManagementPortalDashboardArticlesIndexRoute =
+  ManagementPortalDashboardArticlesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ManagementPortalDashboardArticlesRoute,
+  } as any)
+const ManagementPortalDashboardCategoriesCreateRoute =
+  ManagementPortalDashboardCategoriesCreateRouteImport.update({
+    id: '/create',
+    path: '/create',
+    getParentRoute: () => ManagementPortalDashboardCategoriesRoute,
+  } as any)
+const ManagementPortalDashboardArticlesCreateRoute =
+  ManagementPortalDashboardArticlesCreateRouteImport.update({
+    id: '/create',
+    path: '/create',
+    getParentRoute: () => ManagementPortalDashboardArticlesRoute,
+  } as any)
+const ManagementPortalDashboardArticlesArticleIdRoute =
+  ManagementPortalDashboardArticlesArticleIdRouteImport.update({
+    id: '/$articleId',
+    path: '/$articleId',
+    getParentRoute: () => ManagementPortalDashboardArticlesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/feed.xml': typeof FeedDotxmlRoute
   '/privacy': typeof PrivacyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/article/$slug': typeof ArticleSlugRoute
+  '/author/$slug': typeof AuthorSlugRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/management-portal/dashboard': typeof ManagementPortalDashboardRouteWithChildren
+  '/tag/$tag': typeof TagTagRoute
+  '/management-portal/': typeof ManagementPortalIndexRoute
+  '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
+  '/management-portal/dashboard/articles': typeof ManagementPortalDashboardArticlesRouteWithChildren
+  '/management-portal/dashboard/categories': typeof ManagementPortalDashboardCategoriesRouteWithChildren
+  '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
+  '/management-portal/dashboard/market': typeof ManagementPortalDashboardMarketRoute
+  '/management-portal/dashboard/media': typeof ManagementPortalDashboardMediaRoute
+  '/management-portal/dashboard/settings': typeof ManagementPortalDashboardSettingsRoute
+  '/management-portal/dashboard/users': typeof ManagementPortalDashboardUsersRoute
+  '/management-portal/dashboard/weather': typeof ManagementPortalDashboardWeatherRoute
+  '/management-portal/dashboard/': typeof ManagementPortalDashboardIndexRoute
+  '/management-portal/dashboard/articles/$articleId': typeof ManagementPortalDashboardArticlesArticleIdRoute
+  '/management-portal/dashboard/articles/create': typeof ManagementPortalDashboardArticlesCreateRoute
+  '/management-portal/dashboard/categories/create': typeof ManagementPortalDashboardCategoriesCreateRoute
+  '/management-portal/dashboard/articles/': typeof ManagementPortalDashboardArticlesIndexRoute
+  '/management-portal/dashboard/categories/': typeof ManagementPortalDashboardCategoriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/feed.xml': typeof FeedDotxmlRoute
   '/privacy': typeof PrivacyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/article/$slug': typeof ArticleSlugRoute
+  '/author/$slug': typeof AuthorSlugRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/tag/$tag': typeof TagTagRoute
+  '/management-portal': typeof ManagementPortalIndexRoute
+  '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
+  '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
+  '/management-portal/dashboard/market': typeof ManagementPortalDashboardMarketRoute
+  '/management-portal/dashboard/media': typeof ManagementPortalDashboardMediaRoute
+  '/management-portal/dashboard/settings': typeof ManagementPortalDashboardSettingsRoute
+  '/management-portal/dashboard/users': typeof ManagementPortalDashboardUsersRoute
+  '/management-portal/dashboard/weather': typeof ManagementPortalDashboardWeatherRoute
+  '/management-portal/dashboard': typeof ManagementPortalDashboardIndexRoute
+  '/management-portal/dashboard/articles/$articleId': typeof ManagementPortalDashboardArticlesArticleIdRoute
+  '/management-portal/dashboard/articles/create': typeof ManagementPortalDashboardArticlesCreateRoute
+  '/management-portal/dashboard/categories/create': typeof ManagementPortalDashboardCategoriesCreateRoute
+  '/management-portal/dashboard/articles': typeof ManagementPortalDashboardArticlesIndexRoute
+  '/management-portal/dashboard/categories': typeof ManagementPortalDashboardCategoriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/feed.xml': typeof FeedDotxmlRoute
   '/privacy': typeof PrivacyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/article/$slug': typeof ArticleSlugRoute
+  '/author/$slug': typeof AuthorSlugRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/management-portal/dashboard': typeof ManagementPortalDashboardRouteWithChildren
+  '/tag/$tag': typeof TagTagRoute
+  '/management-portal/': typeof ManagementPortalIndexRoute
+  '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
+  '/management-portal/dashboard/articles': typeof ManagementPortalDashboardArticlesRouteWithChildren
+  '/management-portal/dashboard/categories': typeof ManagementPortalDashboardCategoriesRouteWithChildren
+  '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
+  '/management-portal/dashboard/market': typeof ManagementPortalDashboardMarketRoute
+  '/management-portal/dashboard/media': typeof ManagementPortalDashboardMediaRoute
+  '/management-portal/dashboard/settings': typeof ManagementPortalDashboardSettingsRoute
+  '/management-portal/dashboard/users': typeof ManagementPortalDashboardUsersRoute
+  '/management-portal/dashboard/weather': typeof ManagementPortalDashboardWeatherRoute
+  '/management-portal/dashboard/': typeof ManagementPortalDashboardIndexRoute
+  '/management-portal/dashboard/articles/$articleId': typeof ManagementPortalDashboardArticlesArticleIdRoute
+  '/management-portal/dashboard/articles/create': typeof ManagementPortalDashboardArticlesCreateRoute
+  '/management-portal/dashboard/categories/create': typeof ManagementPortalDashboardCategoriesCreateRoute
+  '/management-portal/dashboard/articles/': typeof ManagementPortalDashboardArticlesIndexRoute
+  '/management-portal/dashboard/categories/': typeof ManagementPortalDashboardCategoriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,38 +289,104 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/feed.xml'
     | '/privacy'
+    | '/search'
     | '/sitemap.xml'
     | '/article/$slug'
+    | '/author/$slug'
     | '/category/$slug'
+    | '/management-portal/dashboard'
+    | '/tag/$tag'
+    | '/management-portal/'
+    | '/management-portal/dashboard/ads'
+    | '/management-portal/dashboard/articles'
+    | '/management-portal/dashboard/categories'
+    | '/management-portal/dashboard/comments'
+    | '/management-portal/dashboard/market'
+    | '/management-portal/dashboard/media'
+    | '/management-portal/dashboard/settings'
+    | '/management-portal/dashboard/users'
+    | '/management-portal/dashboard/weather'
+    | '/management-portal/dashboard/'
+    | '/management-portal/dashboard/articles/$articleId'
+    | '/management-portal/dashboard/articles/create'
+    | '/management-portal/dashboard/categories/create'
+    | '/management-portal/dashboard/articles/'
+    | '/management-portal/dashboard/categories/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
+    | '/feed.xml'
     | '/privacy'
+    | '/search'
     | '/sitemap.xml'
     | '/article/$slug'
+    | '/author/$slug'
     | '/category/$slug'
+    | '/tag/$tag'
+    | '/management-portal'
+    | '/management-portal/dashboard/ads'
+    | '/management-portal/dashboard/comments'
+    | '/management-portal/dashboard/market'
+    | '/management-portal/dashboard/media'
+    | '/management-portal/dashboard/settings'
+    | '/management-portal/dashboard/users'
+    | '/management-portal/dashboard/weather'
+    | '/management-portal/dashboard'
+    | '/management-portal/dashboard/articles/$articleId'
+    | '/management-portal/dashboard/articles/create'
+    | '/management-portal/dashboard/categories/create'
+    | '/management-portal/dashboard/articles'
+    | '/management-portal/dashboard/categories'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
+    | '/feed.xml'
     | '/privacy'
+    | '/search'
     | '/sitemap.xml'
     | '/article/$slug'
+    | '/author/$slug'
     | '/category/$slug'
+    | '/management-portal/dashboard'
+    | '/tag/$tag'
+    | '/management-portal/'
+    | '/management-portal/dashboard/ads'
+    | '/management-portal/dashboard/articles'
+    | '/management-portal/dashboard/categories'
+    | '/management-portal/dashboard/comments'
+    | '/management-portal/dashboard/market'
+    | '/management-portal/dashboard/media'
+    | '/management-portal/dashboard/settings'
+    | '/management-portal/dashboard/users'
+    | '/management-portal/dashboard/weather'
+    | '/management-portal/dashboard/'
+    | '/management-portal/dashboard/articles/$articleId'
+    | '/management-portal/dashboard/articles/create'
+    | '/management-portal/dashboard/categories/create'
+    | '/management-portal/dashboard/articles/'
+    | '/management-portal/dashboard/categories/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  FeedDotxmlRoute: typeof FeedDotxmlRoute
   PrivacyRoute: typeof PrivacyRoute
+  SearchRoute: typeof SearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ArticleSlugRoute: typeof ArticleSlugRoute
+  AuthorSlugRoute: typeof AuthorSlugRoute
   CategorySlugRoute: typeof CategorySlugRoute
+  ManagementPortalDashboardRoute: typeof ManagementPortalDashboardRouteWithChildren
+  TagTagRoute: typeof TagTagRoute
+  ManagementPortalIndexRoute: typeof ManagementPortalIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -130,11 +398,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feed.xml': {
+      id: '/feed.xml'
+      path: '/feed.xml'
+      fullPath: '/feed.xml'
+      preLoaderRoute: typeof FeedDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -158,11 +440,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/management-portal/': {
+      id: '/management-portal/'
+      path: '/management-portal'
+      fullPath: '/management-portal/'
+      preLoaderRoute: typeof ManagementPortalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tag/$tag': {
+      id: '/tag/$tag'
+      path: '/tag/$tag'
+      fullPath: '/tag/$tag'
+      preLoaderRoute: typeof TagTagRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/management-portal/dashboard': {
+      id: '/management-portal/dashboard'
+      path: '/management-portal/dashboard'
+      fullPath: '/management-portal/dashboard'
+      preLoaderRoute: typeof ManagementPortalDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/category/$slug'
       fullPath: '/category/$slug'
       preLoaderRoute: typeof CategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/author/$slug': {
+      id: '/author/$slug'
+      path: '/author/$slug'
+      fullPath: '/author/$slug'
+      preLoaderRoute: typeof AuthorSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/article/$slug': {
@@ -172,18 +482,215 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/management-portal/dashboard/': {
+      id: '/management-portal/dashboard/'
+      path: '/'
+      fullPath: '/management-portal/dashboard/'
+      preLoaderRoute: typeof ManagementPortalDashboardIndexRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/weather': {
+      id: '/management-portal/dashboard/weather'
+      path: '/weather'
+      fullPath: '/management-portal/dashboard/weather'
+      preLoaderRoute: typeof ManagementPortalDashboardWeatherRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/users': {
+      id: '/management-portal/dashboard/users'
+      path: '/users'
+      fullPath: '/management-portal/dashboard/users'
+      preLoaderRoute: typeof ManagementPortalDashboardUsersRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/settings': {
+      id: '/management-portal/dashboard/settings'
+      path: '/settings'
+      fullPath: '/management-portal/dashboard/settings'
+      preLoaderRoute: typeof ManagementPortalDashboardSettingsRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/media': {
+      id: '/management-portal/dashboard/media'
+      path: '/media'
+      fullPath: '/management-portal/dashboard/media'
+      preLoaderRoute: typeof ManagementPortalDashboardMediaRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/market': {
+      id: '/management-portal/dashboard/market'
+      path: '/market'
+      fullPath: '/management-portal/dashboard/market'
+      preLoaderRoute: typeof ManagementPortalDashboardMarketRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/comments': {
+      id: '/management-portal/dashboard/comments'
+      path: '/comments'
+      fullPath: '/management-portal/dashboard/comments'
+      preLoaderRoute: typeof ManagementPortalDashboardCommentsRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/categories': {
+      id: '/management-portal/dashboard/categories'
+      path: '/categories'
+      fullPath: '/management-portal/dashboard/categories'
+      preLoaderRoute: typeof ManagementPortalDashboardCategoriesRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/articles': {
+      id: '/management-portal/dashboard/articles'
+      path: '/articles'
+      fullPath: '/management-portal/dashboard/articles'
+      preLoaderRoute: typeof ManagementPortalDashboardArticlesRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/ads': {
+      id: '/management-portal/dashboard/ads'
+      path: '/ads'
+      fullPath: '/management-portal/dashboard/ads'
+      preLoaderRoute: typeof ManagementPortalDashboardAdsRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
+    '/management-portal/dashboard/categories/': {
+      id: '/management-portal/dashboard/categories/'
+      path: '/'
+      fullPath: '/management-portal/dashboard/categories/'
+      preLoaderRoute: typeof ManagementPortalDashboardCategoriesIndexRouteImport
+      parentRoute: typeof ManagementPortalDashboardCategoriesRoute
+    }
+    '/management-portal/dashboard/articles/': {
+      id: '/management-portal/dashboard/articles/'
+      path: '/'
+      fullPath: '/management-portal/dashboard/articles/'
+      preLoaderRoute: typeof ManagementPortalDashboardArticlesIndexRouteImport
+      parentRoute: typeof ManagementPortalDashboardArticlesRoute
+    }
+    '/management-portal/dashboard/categories/create': {
+      id: '/management-portal/dashboard/categories/create'
+      path: '/create'
+      fullPath: '/management-portal/dashboard/categories/create'
+      preLoaderRoute: typeof ManagementPortalDashboardCategoriesCreateRouteImport
+      parentRoute: typeof ManagementPortalDashboardCategoriesRoute
+    }
+    '/management-portal/dashboard/articles/create': {
+      id: '/management-portal/dashboard/articles/create'
+      path: '/create'
+      fullPath: '/management-portal/dashboard/articles/create'
+      preLoaderRoute: typeof ManagementPortalDashboardArticlesCreateRouteImport
+      parentRoute: typeof ManagementPortalDashboardArticlesRoute
+    }
+    '/management-portal/dashboard/articles/$articleId': {
+      id: '/management-portal/dashboard/articles/$articleId'
+      path: '/$articleId'
+      fullPath: '/management-portal/dashboard/articles/$articleId'
+      preLoaderRoute: typeof ManagementPortalDashboardArticlesArticleIdRouteImport
+      parentRoute: typeof ManagementPortalDashboardArticlesRoute
+    }
   }
 }
+
+interface ManagementPortalDashboardArticlesRouteChildren {
+  ManagementPortalDashboardArticlesArticleIdRoute: typeof ManagementPortalDashboardArticlesArticleIdRoute
+  ManagementPortalDashboardArticlesCreateRoute: typeof ManagementPortalDashboardArticlesCreateRoute
+  ManagementPortalDashboardArticlesIndexRoute: typeof ManagementPortalDashboardArticlesIndexRoute
+}
+
+const ManagementPortalDashboardArticlesRouteChildren: ManagementPortalDashboardArticlesRouteChildren =
+  {
+    ManagementPortalDashboardArticlesArticleIdRoute:
+      ManagementPortalDashboardArticlesArticleIdRoute,
+    ManagementPortalDashboardArticlesCreateRoute:
+      ManagementPortalDashboardArticlesCreateRoute,
+    ManagementPortalDashboardArticlesIndexRoute:
+      ManagementPortalDashboardArticlesIndexRoute,
+  }
+
+const ManagementPortalDashboardArticlesRouteWithChildren =
+  ManagementPortalDashboardArticlesRoute._addFileChildren(
+    ManagementPortalDashboardArticlesRouteChildren,
+  )
+
+interface ManagementPortalDashboardCategoriesRouteChildren {
+  ManagementPortalDashboardCategoriesCreateRoute: typeof ManagementPortalDashboardCategoriesCreateRoute
+  ManagementPortalDashboardCategoriesIndexRoute: typeof ManagementPortalDashboardCategoriesIndexRoute
+}
+
+const ManagementPortalDashboardCategoriesRouteChildren: ManagementPortalDashboardCategoriesRouteChildren =
+  {
+    ManagementPortalDashboardCategoriesCreateRoute:
+      ManagementPortalDashboardCategoriesCreateRoute,
+    ManagementPortalDashboardCategoriesIndexRoute:
+      ManagementPortalDashboardCategoriesIndexRoute,
+  }
+
+const ManagementPortalDashboardCategoriesRouteWithChildren =
+  ManagementPortalDashboardCategoriesRoute._addFileChildren(
+    ManagementPortalDashboardCategoriesRouteChildren,
+  )
+
+interface ManagementPortalDashboardRouteChildren {
+  ManagementPortalDashboardAdsRoute: typeof ManagementPortalDashboardAdsRoute
+  ManagementPortalDashboardArticlesRoute: typeof ManagementPortalDashboardArticlesRouteWithChildren
+  ManagementPortalDashboardCategoriesRoute: typeof ManagementPortalDashboardCategoriesRouteWithChildren
+  ManagementPortalDashboardCommentsRoute: typeof ManagementPortalDashboardCommentsRoute
+  ManagementPortalDashboardMarketRoute: typeof ManagementPortalDashboardMarketRoute
+  ManagementPortalDashboardMediaRoute: typeof ManagementPortalDashboardMediaRoute
+  ManagementPortalDashboardSettingsRoute: typeof ManagementPortalDashboardSettingsRoute
+  ManagementPortalDashboardUsersRoute: typeof ManagementPortalDashboardUsersRoute
+  ManagementPortalDashboardWeatherRoute: typeof ManagementPortalDashboardWeatherRoute
+  ManagementPortalDashboardIndexRoute: typeof ManagementPortalDashboardIndexRoute
+}
+
+const ManagementPortalDashboardRouteChildren: ManagementPortalDashboardRouteChildren =
+  {
+    ManagementPortalDashboardAdsRoute: ManagementPortalDashboardAdsRoute,
+    ManagementPortalDashboardArticlesRoute:
+      ManagementPortalDashboardArticlesRouteWithChildren,
+    ManagementPortalDashboardCategoriesRoute:
+      ManagementPortalDashboardCategoriesRouteWithChildren,
+    ManagementPortalDashboardCommentsRoute:
+      ManagementPortalDashboardCommentsRoute,
+    ManagementPortalDashboardMarketRoute: ManagementPortalDashboardMarketRoute,
+    ManagementPortalDashboardMediaRoute: ManagementPortalDashboardMediaRoute,
+    ManagementPortalDashboardSettingsRoute:
+      ManagementPortalDashboardSettingsRoute,
+    ManagementPortalDashboardUsersRoute: ManagementPortalDashboardUsersRoute,
+    ManagementPortalDashboardWeatherRoute:
+      ManagementPortalDashboardWeatherRoute,
+    ManagementPortalDashboardIndexRoute: ManagementPortalDashboardIndexRoute,
+  }
+
+const ManagementPortalDashboardRouteWithChildren =
+  ManagementPortalDashboardRoute._addFileChildren(
+    ManagementPortalDashboardRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  FeedDotxmlRoute: FeedDotxmlRoute,
   PrivacyRoute: PrivacyRoute,
+  SearchRoute: SearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ArticleSlugRoute: ArticleSlugRoute,
+  AuthorSlugRoute: AuthorSlugRoute,
   CategorySlugRoute: CategorySlugRoute,
+  ManagementPortalDashboardRoute: ManagementPortalDashboardRouteWithChildren,
+  TagTagRoute: TagTagRoute,
+  ManagementPortalIndexRoute: ManagementPortalIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

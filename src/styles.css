@@ -1,3 +1,4 @@
+/* Cinescope Global Concept — brand tokens, typography, and layout utilities */
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -37,21 +38,31 @@
   --color-rule: var(--rule);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
+  --color-lime: var(--lime);
+  --color-lime-foreground: var(--lime-foreground);
+  --color-accent-red: var(--accent-red);
+  --color-accent-red-foreground: var(--accent-red-foreground);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
 
-  --font-display: "Fraunces", "Playfair Display", Georgia, serif;
+  /* Cinescope brand fonts */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
   --font-editorial: "Instrument Serif", Georgia, serif;
   --font-serif: "Source Serif 4", "Lora", Georgia, serif;
-  --font-sans: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-sans: "DM Sans", "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --shadow-card: 0 1px 2px rgb(17 24 39 / 0.04), 0 8px 24px -12px rgb(17 24 39 / 0.08);
-  --shadow-elevated: 0 2px 4px rgb(17 24 39 / 0.04), 0 24px 48px -16px rgb(17 24 39 / 0.12);
+  --shadow-card: 0 1px 3px rgb(17 24 39 / 0.05), 0 8px 24px -10px rgb(17 24 39 / 0.09);
+  --shadow-elevated: 0 2px 6px rgb(17 24 39 / 0.05), 0 24px 52px -14px rgb(17 24 39 / 0.13);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   --animate-marquee: marquee 50s linear infinite;
   --animate-fade-in: fade-in 0.7s var(--ease-out-expo) both;
   --animate-pulse-dot: pulse-dot 1.6s ease-in-out infinite;
+  --animate-hero-scale: hero-scale 8s ease both;
+  --animate-reveal: reveal-up 0.7s var(--ease-out-expo) both;
+  --animate-slide-down: slide-down 0.35s var(--ease-out-expo) both;
 
   @keyframes marquee {
     0% { transform: translateX(0); }
@@ -65,20 +76,64 @@
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.4; transform: scale(0.8); }
   }
+  @keyframes hero-scale {
+    from { transform: scale(1.06); }
+    to { transform: scale(1); }
+  }
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ken-burns {
+    from { transform: scale(1.08) translate(0.8%, 0.4%); }
+    to   { transform: scale(1.0)  translate(0%, 0%); }
+  }
+  @keyframes progress-bar {
+    from { width: 0%; }
+    to   { width: 100%; }
+  }
+  @keyframes cat-border-grow {
+    from { height: 0; }
+    to   { height: 100%; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to   { background-position: 200% 0; }
+  }
+  @keyframes image-reveal {
+    from { opacity: 0; transform: scale(1.04); }
+    to   { opacity: 1; transform: scale(1); }
+  }
 }
 
 :root {
   --radius: 0.5rem;
 
-  --background: oklch(0.992 0.002 90);
-  --foreground: oklch(0.18 0.02 260);
-  --ink: oklch(0.18 0.02 260);
-  --ink-muted: oklch(0.5 0.015 260);
-  --surface: oklch(0.97 0.005 90);
-  --rule: oklch(0.9 0.005 260);
+  --background: oklch(0.994 0.003 90);
+  --foreground: oklch(0.10 0.015 260);
+  --ink: oklch(0.10 0.015 260);
+  --ink-muted: oklch(0.46 0.015 260);
+  --surface: oklch(0.975 0.004 90);
+  --rule: oklch(0.91 0.005 260);
 
-  --brand: oklch(0.5 0.21 27);
-  --brand-foreground: oklch(0.99 0 0);
+  /* Primary brand: lime #C5D400 — used for backgrounds, borders, accents */
+  --brand: oklch(0.82 0.18 112);
+  --brand-foreground: oklch(0.11 0.01 260);
+
+  /* Lime aliases (explicit) */
+  --lime: oklch(0.82 0.18 112);
+  --lime-foreground: oklch(0.11 0.01 260);
+
+  /* Accent red #CC0000 — breaking labels, urgent badges, logo accent */
+  --accent-red: oklch(0.44 0.20 27);
+  --accent-red-foreground: oklch(0.99 0 0);
+
+  --gold: oklch(0.76 0.13 82);
+  --gold-foreground: oklch(0.18 0.02 260);
 
   --card: oklch(1 0 0);
   --card-foreground: var(--ink);
@@ -93,7 +148,7 @@
   --muted-foreground: var(--ink-muted);
   --accent: var(--brand);
   --accent-foreground: var(--brand-foreground);
-  --destructive: oklch(0.55 0.22 27);
+  --destructive: oklch(0.44 0.20 27);
   --destructive-foreground: oklch(0.99 0 0);
   --border: var(--rule);
   --input: var(--rule);
@@ -101,13 +156,20 @@
 }
 
 .dark {
-  --background: oklch(0.14 0.01 260);
-  --foreground: oklch(0.97 0.005 90);
-  --ink: oklch(0.97 0.005 90);
-  --ink-muted: oklch(0.7 0.015 260);
-  --surface: oklch(0.2 0.015 260);
-  --rule: oklch(0.28 0.015 260);
-  --brand: oklch(0.62 0.22 27);
+  --background: oklch(0.12 0.012 260);
+  --foreground: oklch(0.96 0.004 90);
+  --ink: oklch(0.96 0.004 90);
+  --ink-muted: oklch(0.65 0.014 260);
+  --surface: oklch(0.18 0.016 260);
+  --rule: oklch(0.26 0.014 260);
+  /* Slightly muted lime in dark mode for readability */
+  --brand: oklch(0.80 0.16 112);
+  --brand-foreground: oklch(0.10 0.01 260);
+  --lime: oklch(0.80 0.16 112);
+  --lime-foreground: oklch(0.10 0.01 260);
+  --accent-red: oklch(0.56 0.21 27);
+  --accent-red-foreground: oklch(0.99 0 0);
+  --gold: oklch(0.82 0.13 82);
   --card: oklch(0.18 0.015 260);
   --card-foreground: var(--ink);
   --popover: oklch(0.18 0.015 260);
@@ -119,10 +181,16 @@
   --muted: var(--surface);
   --muted-foreground: var(--ink-muted);
   --accent: var(--brand);
-  --accent-foreground: oklch(0.99 0 0);
+  --accent-foreground: var(--brand-foreground);
   --border: var(--rule);
   --input: var(--rule);
   --ring: var(--brand);
+}
+
+/* xs breakpoint for very small screens (< 480px) */
+@media (min-width: 480px) {
+  .xs\:inline { display: inline; }
+  .xs\:hidden { display: none; }
 }
 
 @layer base {
@@ -131,6 +199,10 @@
   }
   html {
     scroll-behavior: smooth;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
   }
   body {
     background-color: var(--color-background);
@@ -138,19 +210,20 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display);
-    letter-spacing: -0.022em;
-    font-variation-settings: "opsz" 144, "SOFT" 30;
+    letter-spacing: -0.015em;
   }
   ::selection {
-    background: color-mix(in oklab, var(--brand) 25%, transparent);
+    background: color-mix(in oklab, var(--brand) 30%, transparent);
+    color: var(--brand-foreground);
   }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 30; }
+  .font-display { font-family: var(--font-display); }
   .font-editorial { font-family: var(--font-editorial); font-weight: 400; letter-spacing: -0.01em; }
   .font-serif-body { font-family: var(--font-serif); }
   .font-mono { font-family: var(--font-mono); }
@@ -162,11 +235,215 @@
   .border-rule { border-color: var(--rule); }
   .shadow-card { box-shadow: var(--shadow-card); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }
+
+  /* Lime — explicit utilities for lime backgrounds */
+  .bg-lime { background-color: var(--lime); }
+  .text-lime { color: var(--lime); }
+  .border-lime { border-color: var(--lime); }
+  .text-lime-foreground { color: var(--lime-foreground); }
+
+  /* Accent red — explicit utilities for breaking/urgent/logo elements */
+  .bg-accent-red { background-color: var(--accent-red); }
+  .text-accent-red { color: var(--accent-red); }
+  .border-accent-red { border-color: var(--accent-red); }
+  .text-accent-red-foreground { color: var(--accent-red-foreground); }
+
+  /* Scroll reveal — toggled by IntersectionObserver */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.75s var(--ease-out-expo), transform 0.75s var(--ease-out-expo);
+  }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 100ms; }
+  .reveal-delay-2 { transition-delay: 200ms; }
+  .reveal-delay-3 { transition-delay: 300ms; }
+  .reveal-delay-4 { transition-delay: 400ms; }
+  /* Card hover elevation */
+  .card-lift {
+    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 2px 6px rgb(17 24 39 / 0.04), 0 20px 44px -14px rgb(17 24 39 / 0.11);
+  }
+  .dark .card-lift:hover {
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.25), 0 20px 44px -14px rgb(0 0 0 / 0.45);
+  }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: 0.6875rem;
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
+  .text-gold { color: var(--gold); }
+  .bg-gold { background-color: var(--gold); }
+  .text-brand-foreground { color: var(--brand-foreground); }
+  .bg-brand-foreground { background-color: var(--brand-foreground); }
+
+  /* Premium image shimmer for loading states */
+  .img-shimmer {
+    background: linear-gradient(90deg, var(--surface) 25%, var(--rule) 50%, var(--surface) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+  /* Cinematic image reveal on load */
+  .img-reveal {
+    animation: image-reveal 0.7s var(--ease-out-expo) both;
+  }
+  /* Feature label — gold badge for special stories */
+  .feature-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    background: var(--lime);
+    color: var(--lime-foreground);
+  }
+  /* Edition marker */
+  .edition-mark {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
 }
+
+/* ─── Header nav animated underline ────────────────────────────────────────
+   TanStack Router sets aria-current="page" on the active Link.
+   Lime underline matches Cinescope brand identity.                           */
+.nav-link[aria-current="page"] .nav-underline,
+.nav-link:hover .nav-underline {
+  transform: scaleX(1);
+}
+.nav-link[aria-current="page"] {
+  color: var(--ink);
+}
+
+/* Article body HTML content from the block editor */
+.article-body p { margin-bottom: 1.6rem; line-height: 1.85; }
+
+/* First paragraph rendered larger as a standfirst / lead */
+.article-body > p:first-of-type {
+  font-size: 1.2rem;
+  line-height: 1.75;
+  color: var(--ink);
+  font-weight: 450;
+  margin-bottom: 2rem;
+}
+.article-body h2 { font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; margin: 2.5rem 0 1rem; line-height: 1.15; }
+.article-body h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; margin: 2rem 0 0.75rem; line-height: 1.2; }
+.article-body blockquote {
+  position: relative;
+  margin: 2rem 0;
+  padding: 1.5rem 1.5rem 1.5rem 3rem;
+  border-top: 2px solid var(--rule);
+  border-bottom: 2px solid var(--rule);
+  background: color-mix(in oklab, var(--lime) 6%, var(--background));
+}
+@media (min-width: 640px) {
+  .article-body blockquote p { font-size: 1.45rem; }
+}
+.article-body blockquote::before {
+  content: "\201C";
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--lime);
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  opacity: 0.55;
+}
+@media (min-width: 640px) {
+  .article-body blockquote { margin: 3rem -1.5rem; padding: 2rem 2.5rem 2rem 3.5rem; }
+}
+.article-body blockquote p {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink);
+  margin: 0;
+  font-style: italic;
+}
+.article-body blockquote cite {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-style: normal;
+}
+.dark .article-body blockquote {
+  background: color-mix(in oklab, var(--lime) 8%, var(--surface));
+}
+.article-body hr { border: none; border-top: 2px solid var(--rule); margin: 2.5rem 0; }
+.article-body figure { margin: 2.5rem 0; clear: both; }
+.article-body figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08), 0 16px 40px -12px rgb(0 0 0 / 0.14);
+  content-visibility: auto;
+}
+.article-body figure img[data-align="left"],
+.article-body figure img[style*="float: left"] {
+  float: left;
+  width: 45%;
+  margin: 0.25rem 2rem 1rem 0;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1), 0 12px 32px -8px rgb(0 0 0 / 0.16);
+}
+.article-body figure img[data-align="right"],
+.article-body figure img[style*="float: right"] {
+  float: right;
+  width: 45%;
+  margin: 0.25rem 0 1rem 2rem;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1), 0 12px 32px -8px rgb(0 0 0 / 0.16);
+}
+@media (max-width: 640px) {
+  .article-body figure img[data-align="left"],
+  .article-body figure img[style*="float: left"],
+  .article-body figure img[data-align="right"],
+  .article-body figure img[style*="float: right"] {
+    float: none;
+    width: 100%;
+    margin: 0;
+  }
+}
+.article-body figcaption {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin-top: 0.6rem;
+  font-style: italic;
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+}
+.article-body figcaption::before { content: "— "; }
+.dark .article-body figure img {
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.3), 0 16px 40px -12px rgb(0 0 0 / 0.45);
+}
+.article-body p:first-child::first-letter { font-family: var(--font-display); font-size: 4.5rem; font-weight: 900; float: left; margin: 0 0.25rem 0 0; line-height: 0.8; }
+.article-body a { color: var(--accent-red); text-decoration: underline; text-underline-offset: 3px; }
+.article-body a:hover { opacity: 0.8; }
+.article-body code { font-family: var(--font-mono); font-size: 0.875em; background: var(--surface); padding: 0.15em 0.4em; border-radius: 3px; }
+.article-body pre { background: var(--surface); padding: 1.25rem 1.5rem; border-radius: 6px; overflow-x: auto; margin: 2rem 0; }
+.article-body pre code { background: none; padding: 0; }
+.article-body ul, .article-body ol { padding-left: 1.75rem; margin-bottom: 1.5rem; }
+.article-body li { margin-bottom: 0.5rem; }
+
+.dark .article-body figure img { opacity: 0.92; }
+.dark .article-body blockquote { background: color-mix(in oklab, var(--lime) 8%, transparent); }

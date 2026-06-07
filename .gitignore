@@ -20,6 +20,16 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Environment — never commit credentials
+.env
+.env.*
+!.env.example
+
+# Scratch / generated
+zipfolder/
+migration_output/
+src/routes/index.tsx.backup
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

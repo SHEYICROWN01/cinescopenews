@@ -1,0 +1,5 @@
+# Google AdSense verification
+# Replace ca-pub-XXXXXXXXXXXXXXXX with your actual AdSense publisher ID
+# This file is required for AdSense approval and ad serving
+
+google.com, ca-pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
