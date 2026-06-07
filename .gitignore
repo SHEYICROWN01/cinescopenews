@@ -30,6 +30,9 @@ zipfolder/
 migration_output/
 src/routes/index.tsx.backup
 
+# Uploaded media — serve from disk, not git
+public/uploads/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
