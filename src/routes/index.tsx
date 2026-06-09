@@ -423,12 +423,12 @@ function EditorialGrid({ articles }: { articles: SiteArticle[] }) {
                 </span>
               )}
             </div>
-            <h3 className="font-display text-xl font-black leading-tight group-hover:opacity-60 transition-opacity mb-2 line-clamp-2" style={{ color: "#0A0A0A", letterSpacing: "-0.02em" }}>
+            <h3 className="font-display text-xl font-black leading-tight group-hover:opacity-60 transition-opacity mb-2 line-clamp-2" style={{ color: "var(--ink)", letterSpacing: "-0.02em" }}>
               {lead.title}
             </h3>
-            {lead.subtitle && <p className="text-sm font-serif-body leading-relaxed line-clamp-2 mb-3" style={{ color: "rgba(0,0,0,0.5)" }}>{lead.subtitle}</p>}
-            <p className="text-[10px] uppercase tracking-wider mt-auto flex items-center gap-1.5" style={{ color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)" }}>
-              <span className="font-bold" style={{ color: "#0A0A0A" }}>{lead.author || "Staff Reporter"}</span>
+            {lead.subtitle && <p className="text-sm font-serif-body leading-relaxed line-clamp-2 mb-3" style={{ color: "var(--ink-muted)" }}>{lead.subtitle}</p>}
+            <p className="text-[10px] uppercase tracking-wider mt-auto flex items-center gap-1.5" style={{ color: "var(--ink-muted)", fontFamily: "var(--font-mono)" }}>
+              <span className="font-bold" style={{ color: "var(--ink)" }}>{lead.author || "Staff Reporter"}</span>
               <span>·</span>{lead.date}
             </p>
           </Link>
@@ -437,7 +437,7 @@ function EditorialGrid({ articles }: { articles: SiteArticle[] }) {
         {/* Side cards — 1 col each */}
         <div className="flex flex-col gap-5">
           {side.map((a) => (
-            <Link key={a.slug} to="/article/$slug" params={{ slug: a.slug }} className="group flex gap-3 pb-5 border-b last:border-0" style={{ borderColor: "rgba(0,0,0,0.08)" }}>
+            <Link key={a.slug} to="/article/$slug" params={{ slug: a.slug }} className="group flex gap-3 pb-5 border-b last:border-0" style={{ borderColor: "var(--rule)" }}>
               <div className="relative w-20 h-16 shrink-0 overflow-hidden">
                 {a.featuredImage ? (
                   <img src={a.featuredImage} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
@@ -447,8 +447,8 @@ function EditorialGrid({ articles }: { articles: SiteArticle[] }) {
               </div>
               <div className="min-w-0">
                 <span className="text-[9px] font-black uppercase tracking-widest block mb-1" style={{ color: catColor(a.categorySlug), fontFamily: "var(--font-mono)" }}>{a.categoryName}</span>
-                <h4 className="font-display text-sm font-bold leading-snug line-clamp-3 group-hover:opacity-60 transition-opacity" style={{ color: "#0A0A0A" }}>{a.title}</h4>
-                <p className="text-[10px] mt-1" style={{ color: "rgba(0,0,0,0.3)", fontFamily: "var(--font-mono)" }}>{a.date}</p>
+                <h4 className="font-display text-sm font-bold leading-snug line-clamp-3 group-hover:opacity-60 transition-opacity" style={{ color: "var(--ink)" }}>{a.title}</h4>
+                <p className="text-[10px] mt-1" style={{ color: "var(--ink-muted)", fontFamily: "var(--font-mono)" }}>{a.date}</p>
               </div>
             </Link>
           ))}
@@ -457,7 +457,7 @@ function EditorialGrid({ articles }: { articles: SiteArticle[] }) {
 
       {/* Row 2: 3 equal cards */}
       {bottom.length > 0 && (
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 pt-6 border-t" style={{ borderColor: "rgba(0,0,0,0.08)" }}>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 pt-6 border-t" style={{ borderColor: "var(--rule)" }}>
           {bottom.map((a) => (
             <Link key={a.slug} to="/article/$slug" params={{ slug: a.slug }} className="group flex flex-col">
               <div className="relative overflow-hidden mb-3" style={{ aspectRatio: "3/2" }}>
@@ -468,8 +468,8 @@ function EditorialGrid({ articles }: { articles: SiteArticle[] }) {
                 )}
               </div>
               <span className="text-[9px] font-black uppercase tracking-widest mb-1.5 block" style={{ color: catColor(a.categorySlug), fontFamily: "var(--font-mono)" }}>{a.categoryName}</span>
-              <h4 className="font-display text-[15px] font-bold leading-snug line-clamp-2 group-hover:opacity-60 transition-opacity mb-2" style={{ color: "#0A0A0A" }}>{a.title}</h4>
-              <p className="text-[10px] mt-auto" style={{ color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)" }}>{a.date}</p>
+              <h4 className="font-display text-[15px] font-bold leading-snug line-clamp-2 group-hover:opacity-60 transition-opacity mb-2" style={{ color: "var(--ink)" }}>{a.title}</h4>
+              <p className="text-[10px] mt-auto" style={{ color: "var(--ink-muted)", fontFamily: "var(--font-mono)" }}>{a.date}</p>
             </Link>
           ))}
         </div>
@@ -490,8 +490,8 @@ function CategorySection({ group }: { group: CatGroup }) {
       {/* Header */}
       <div className="flex items-center gap-0 mb-8">
         <div className="w-[3px] h-8 shrink-0 mr-4" style={{ background: group.color }} />
-        <h3 className="font-display text-2xl font-black tracking-tight flex-1" style={{ color: "#0A0A0A", letterSpacing: "-0.02em" }}>{group.name}</h3>
-        <Link to="/category/$slug" params={{ slug: group.slug }} className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest hover:opacity-60 transition-opacity" style={{ color: "#0A0A0A", fontFamily: "var(--font-mono)" }}>
+        <h3 className="font-display text-2xl font-black tracking-tight flex-1" style={{ color: "var(--ink)", letterSpacing: "-0.02em" }}>{group.name}</h3>
+        <Link to="/category/$slug" params={{ slug: group.slug }} className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest hover:opacity-60 transition-opacity" style={{ color: "var(--ink)", fontFamily: "var(--font-mono)" }}>
           All {group.name} <ArrowUpRight size={12} />
         </Link>
       </div>
@@ -511,11 +511,11 @@ function CategorySection({ group }: { group: CatGroup }) {
               )}
               <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: group.color }} />
             </div>
-            <h3 className="font-display text-lg font-black leading-tight group-hover:opacity-60 transition-opacity mb-2 line-clamp-3" style={{ color: "#0A0A0A", letterSpacing: "-0.02em" }}>
+            <h3 className="font-display text-lg font-black leading-tight group-hover:opacity-60 transition-opacity mb-2 line-clamp-3" style={{ color: "var(--ink)", letterSpacing: "-0.02em" }}>
               {lead.title}
             </h3>
-            {lead.subtitle && <p className="text-sm font-serif-body leading-relaxed line-clamp-2 mb-3" style={{ color: "rgba(0,0,0,0.5)" }}>{lead.subtitle}</p>}
-            <p className="text-[10px] uppercase tracking-wider mt-auto" style={{ color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)" }}>
+            {lead.subtitle && <p className="text-sm font-serif-body leading-relaxed line-clamp-2 mb-3" style={{ color: "var(--ink-muted)" }}>{lead.subtitle}</p>}
+            <p className="text-[10px] uppercase tracking-wider mt-auto" style={{ color: "var(--ink-muted)", fontFamily: "var(--font-mono)" }}>
               {lead.author || "Staff Reporter"} · {lead.date}
             </p>
           </Link>
@@ -527,10 +527,10 @@ function CategorySection({ group }: { group: CatGroup }) {
             <Link key={a.slug} to="/article/$slug" params={{ slug: a.slug }} className="group flex gap-3 py-3.5">
               <div className="w-1 h-auto shrink-0 self-stretch" style={{ background: group.color + "44" }} />
               <div className="min-w-0 flex-1">
-                <h4 className="font-display text-[13px] font-bold leading-snug line-clamp-2 group-hover:opacity-60 transition-opacity mb-1" style={{ color: "#0A0A0A" }}>
+                <h4 className="font-display text-[13px] font-bold leading-snug line-clamp-2 group-hover:opacity-60 transition-opacity mb-1" style={{ color: "var(--ink)" }}>
                   {a.title}
                 </h4>
-                <p className="text-[10px]" style={{ color: "rgba(0,0,0,0.35)", fontFamily: "var(--font-mono)" }}>{a.date}</p>
+                <p className="text-[10px]" style={{ color: "var(--ink-muted)", fontFamily: "var(--font-mono)" }}>{a.date}</p>
               </div>
               {a.featuredImage && (
                 <div className="w-14 h-12 shrink-0 overflow-hidden">
@@ -550,9 +550,9 @@ function CategorySection({ group }: { group: CatGroup }) {
 ══════════════════════════════════════════════════════════════════════════ */
 function SidebarHeader({ label }: { label: string }) {
   return (
-    <div className="flex items-center gap-3 pb-3 mb-5" style={{ borderBottom: "2px solid #0A0A0A" }}>
+    <div className="flex items-center gap-3 pb-3 mb-5" style={{ borderBottom: "2px solid var(--ink)" }}>
       <div className="w-[3px] h-5 shrink-0" style={{ background: "#C5D400" }} />
-      <h4 className="font-display text-base font-black tracking-tight uppercase" style={{ color: "#0A0A0A" }}>{label}</h4>
+      <h4 className="font-display text-base font-black tracking-tight uppercase" style={{ color: "var(--ink)" }}>{label}</h4>
     </div>
   );
 }
@@ -564,11 +564,11 @@ function TrendingBlock({ articles }: { articles: SiteArticle[] }) {
       <div className="space-y-0 divide-y" style={{  }}>
         {articles.slice(0, 7).map((a, i) => (
           <Link key={a.slug} to="/article/$slug" params={{ slug: a.slug }} className="group flex gap-4 items-start py-3.5">
-            <span className="font-display font-black shrink-0 mt-0.5" style={{ fontSize: "1.5rem", color: i === 0 ? "#C5D400" : "rgba(0,0,0,0.12)", letterSpacing: "-0.03em", lineHeight: 1 }}>
+            <span className="font-display font-black shrink-0 mt-0.5" style={{ fontSize: "1.5rem", color: i === 0 ? "#C5D400" : "var(--ink-muted)", letterSpacing: "-0.03em", lineHeight: 1 }}>
               {String(i + 1).padStart(2, "0")}
             </span>
             <div className="min-w-0">
-              <h5 className="font-display text-sm font-bold leading-snug group-hover:opacity-60 transition-opacity line-clamp-2 mb-1" style={{ color: "#0A0A0A" }}>{a.title}</h5>
+              <h5 className="font-display text-sm font-bold leading-snug group-hover:opacity-60 transition-opacity line-clamp-2 mb-1" style={{ color: "var(--ink)" }}>{a.title}</h5>
               {a.categoryName && <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: catColor(a.categorySlug), fontFamily: "var(--font-mono)" }}>{a.categoryName}</span>}
             </div>
           </Link>
@@ -585,10 +585,10 @@ function MostReadBlock({ articles }: { articles: SiteArticle[] }) {
       <div className="space-y-0 divide-y" style={{  }}>
         {articles.map((a, i) => (
           <Link key={a.slug} to="/article/$slug" params={{ slug: a.slug }} className="group flex gap-3 items-start py-3.5">
-            <span className="text-[9px] font-black px-1.5 py-0.5 shrink-0 mt-0.5" style={{ background: i === 0 ? "#0A0A0A" : "rgba(0,0,0,0.07)", color: i === 0 ? "#C5D400" : "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono)" }}>
+            <span className="text-[9px] font-black px-1.5 py-0.5 shrink-0 mt-0.5" style={{ background: i === 0 ? "#0A0A0A" : "var(--surface)", color: i === 0 ? "#C5D400" : "var(--ink-muted)", fontFamily: "var(--font-mono)" }}>
               {i + 1}
             </span>
-            <h5 className="font-display text-sm font-bold leading-snug group-hover:opacity-60 transition-opacity line-clamp-2" style={{ color: "#0A0A0A" }}>{a.title}</h5>
+            <h5 className="font-display text-sm font-bold leading-snug group-hover:opacity-60 transition-opacity line-clamp-2" style={{ color: "var(--ink)" }}>{a.title}</h5>
           </Link>
         ))}
       </div>
@@ -641,8 +641,8 @@ function EditorialSectionHeader({ title }: { title: string }) {
   return (
     <div className="flex items-center gap-4 mb-8">
       <div className="w-[3px] h-8 shrink-0" style={{ background: "#C5D400" }} />
-      <h3 className="font-display text-2xl font-black tracking-tight" style={{ color: "#0A0A0A", letterSpacing: "-0.02em" }}>{title}</h3>
-      <div className="h-px flex-1" style={{ background: "rgba(0,0,0,0.08)" }} />
+      <h3 className="font-display text-2xl font-black tracking-tight" style={{ color: "var(--ink)", letterSpacing: "-0.02em" }}>{title}</h3>
+      <div className="h-px flex-1" style={{ background: "var(--rule)" }} />
     </div>
   );
 }
