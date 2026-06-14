@@ -31,6 +31,7 @@ import { Route as ManagementPortalDashboardMarketRouteImport } from './routes/ma
 import { Route as ManagementPortalDashboardCommentsRouteImport } from './routes/management-portal/dashboard/comments'
 import { Route as ManagementPortalDashboardCategoriesRouteImport } from './routes/management-portal/dashboard/categories'
 import { Route as ManagementPortalDashboardArticlesRouteImport } from './routes/management-portal/dashboard/articles'
+import { Route as ManagementPortalDashboardAnalyticsRouteImport } from './routes/management-portal/dashboard/analytics'
 import { Route as ManagementPortalDashboardAdsRouteImport } from './routes/management-portal/dashboard/ads'
 import { Route as ManagementPortalDashboardCategoriesIndexRouteImport } from './routes/management-portal/dashboard/categories/index'
 import { Route as ManagementPortalDashboardArticlesIndexRouteImport } from './routes/management-portal/dashboard/articles/index'
@@ -158,6 +159,12 @@ const ManagementPortalDashboardArticlesRoute =
     path: '/articles',
     getParentRoute: () => ManagementPortalDashboardRoute,
   } as any)
+const ManagementPortalDashboardAnalyticsRoute =
+  ManagementPortalDashboardAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
 const ManagementPortalDashboardAdsRoute =
   ManagementPortalDashboardAdsRouteImport.update({
     id: '/ads',
@@ -210,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/tag/$tag': typeof TagTagRoute
   '/management-portal/': typeof ManagementPortalIndexRoute
   '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
+  '/management-portal/dashboard/analytics': typeof ManagementPortalDashboardAnalyticsRoute
   '/management-portal/dashboard/articles': typeof ManagementPortalDashboardArticlesRouteWithChildren
   '/management-portal/dashboard/categories': typeof ManagementPortalDashboardCategoriesRouteWithChildren
   '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
@@ -239,6 +247,7 @@ export interface FileRoutesByTo {
   '/tag/$tag': typeof TagTagRoute
   '/management-portal': typeof ManagementPortalIndexRoute
   '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
+  '/management-portal/dashboard/analytics': typeof ManagementPortalDashboardAnalyticsRoute
   '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
   '/management-portal/dashboard/market': typeof ManagementPortalDashboardMarketRoute
   '/management-portal/dashboard/media': typeof ManagementPortalDashboardMediaRoute
@@ -268,6 +277,7 @@ export interface FileRoutesById {
   '/tag/$tag': typeof TagTagRoute
   '/management-portal/': typeof ManagementPortalIndexRoute
   '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
+  '/management-portal/dashboard/analytics': typeof ManagementPortalDashboardAnalyticsRoute
   '/management-portal/dashboard/articles': typeof ManagementPortalDashboardArticlesRouteWithChildren
   '/management-portal/dashboard/categories': typeof ManagementPortalDashboardCategoriesRouteWithChildren
   '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
@@ -300,6 +310,7 @@ export interface FileRouteTypes {
     | '/tag/$tag'
     | '/management-portal/'
     | '/management-portal/dashboard/ads'
+    | '/management-portal/dashboard/analytics'
     | '/management-portal/dashboard/articles'
     | '/management-portal/dashboard/categories'
     | '/management-portal/dashboard/comments'
@@ -329,6 +340,7 @@ export interface FileRouteTypes {
     | '/tag/$tag'
     | '/management-portal'
     | '/management-portal/dashboard/ads'
+    | '/management-portal/dashboard/analytics'
     | '/management-portal/dashboard/comments'
     | '/management-portal/dashboard/market'
     | '/management-portal/dashboard/media'
@@ -357,6 +369,7 @@ export interface FileRouteTypes {
     | '/tag/$tag'
     | '/management-portal/'
     | '/management-portal/dashboard/ads'
+    | '/management-portal/dashboard/analytics'
     | '/management-portal/dashboard/articles'
     | '/management-portal/dashboard/categories'
     | '/management-portal/dashboard/comments'
@@ -545,6 +558,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagementPortalDashboardArticlesRouteImport
       parentRoute: typeof ManagementPortalDashboardRoute
     }
+    '/management-portal/dashboard/analytics': {
+      id: '/management-portal/dashboard/analytics'
+      path: '/analytics'
+      fullPath: '/management-portal/dashboard/analytics'
+      preLoaderRoute: typeof ManagementPortalDashboardAnalyticsRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
     '/management-portal/dashboard/ads': {
       id: '/management-portal/dashboard/ads'
       path: '/ads'
@@ -631,6 +651,7 @@ const ManagementPortalDashboardCategoriesRouteWithChildren =
 
 interface ManagementPortalDashboardRouteChildren {
   ManagementPortalDashboardAdsRoute: typeof ManagementPortalDashboardAdsRoute
+  ManagementPortalDashboardAnalyticsRoute: typeof ManagementPortalDashboardAnalyticsRoute
   ManagementPortalDashboardArticlesRoute: typeof ManagementPortalDashboardArticlesRouteWithChildren
   ManagementPortalDashboardCategoriesRoute: typeof ManagementPortalDashboardCategoriesRouteWithChildren
   ManagementPortalDashboardCommentsRoute: typeof ManagementPortalDashboardCommentsRoute
@@ -645,6 +666,8 @@ interface ManagementPortalDashboardRouteChildren {
 const ManagementPortalDashboardRouteChildren: ManagementPortalDashboardRouteChildren =
   {
     ManagementPortalDashboardAdsRoute: ManagementPortalDashboardAdsRoute,
+    ManagementPortalDashboardAnalyticsRoute:
+      ManagementPortalDashboardAnalyticsRoute,
     ManagementPortalDashboardArticlesRoute:
       ManagementPortalDashboardArticlesRouteWithChildren,
     ManagementPortalDashboardCategoriesRoute:

@@ -4,10 +4,11 @@ import { NewsletterCard } from "@/components/site/NewsletterCard";
 import { AdSlot } from "@/components/site/AdSlot";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
 import { AD_SLOTS } from "@/lib/ads";
-import { Twitter, Facebook, Linkedin, Link2, Bookmark, MessageCircle, Send, CheckCircle } from "lucide-react";
+import { MessageCircle, Send, CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getPublishedArticleBySlug } from "../fns/articles";
+import { getPublishedArticleBySlug, incrementArticleViews } from "../fns/articles";
 import { getApprovedCommentsFn, submitCommentFn } from "../fns/comments";
+import { ShareButtons, MobileShareBar } from "@/components/site/SharePanel";
 
 type LoaderResult = NonNullable<Awaited<ReturnType<typeof getPublishedArticleBySlug>>>;
 type ArticleComment = Awaited<ReturnType<typeof getApprovedCommentsFn>>[number];
@@ -16,18 +17,29 @@ export const Route = createFileRoute("/article/$slug")({
   head: ({ loaderData }) => {
     const a = (loaderData as (LoaderResult & { articleComments: ArticleComment[] }) | undefined)?.article;
     if (!a) return { meta: [{ title: "Article — Cinescope Global Concept" }] };
+    const pageUrl = `https://www.cinescopeglobal.com/article/${a.slug}`;
+    const ogImage = a.featuredImage
+      ? (a.featuredImage.startsWith("http") ? a.featuredImage : `https://www.cinescopeglobal.com${a.featuredImage}`)
+      : "https://www.cinescopeglobal.com/logo.png";
     return {
       meta: [
         { title: `${a.title} — Cinescope Global Concept` },
         { name: "description", content: a.subtitle ?? a.title },
         { property: "og:title", content: a.title },
-        { property: "og:description", content: a.subtitle ?? "" },
-        { property: "og:image", content: a.featuredImage ?? "" },
+        { property: "og:description", content: a.subtitle ?? a.title },
+        { property: "og:image", content: ogImage },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { property: "og:url", content: pageUrl },
         { property: "og:type", content: "article" },
+        { property: "og:site_name", content: "Cinescope Global Concept" },
         { property: "article:published_time", content: a.publishedAt ?? "" },
         { property: "article:author", content: a.author ?? "Cinescope Global Concept" },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:image", content: a.featuredImage ?? "" },
+        { name: "twitter:site", content: "@CinescopeGlobal" },
+        { name: "twitter:title", content: a.title },
+        { name: "twitter:description", content: a.subtitle ?? a.title },
+        { name: "twitter:image", content: ogImage },
       ],
       links: [
         {
@@ -123,13 +135,18 @@ export const Route = createFileRoute("/article/$slug")({
 });
 
 function ArticlePage() {
-  const { article, related, articleComments } = Route.useLoaderData() as LoaderResult & { articleComments: ArticleComment[] };
+  const { article, related, readAlsoArticles, articleComments } = Route.useLoaderData() as LoaderResult & { articleComments: ArticleComment[] };
   const [progress, setProgress] = useState(0);
+  const articleUrl = `https://www.cinescopeglobal.com/article/${article.slug}`;
 
   const wordCount = (article.content ?? "").replace(/<[^>]*>/g, " ").split(/\s+/).filter(Boolean).length;
   const readTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
   const authorInitials = (article.author || "S").split(" ").map((n: string) => n[0]).join("");
   const authorSlug = (article.author || "staff-reporter").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+
+  useEffect(() => {
+    incrementArticleViews({ data: article.id }).catch(() => {});
+  }, [article.id]);
 
   useEffect(() => {
     const handler = () => {
@@ -156,6 +173,8 @@ function ArticlePage() {
               alt={article.title}
               className="absolute inset-0 w-full h-full object-cover"
               style={{ animation: "hero-scale 8s ease both" }}
+              fetchPriority="high"
+              loading="eager"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/97 via-ink/60 to-transparent" />
             {article.featuredImageCaption && (
@@ -259,7 +278,7 @@ function ArticlePage() {
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 md:py-16">
 
-        <div className="mb-6 md:mb-8">
+        <div className="mb-4 md:mb-8">
           <Breadcrumb
             crumbs={[
               ...(article.categoryName && article.categorySlug
@@ -270,15 +289,14 @@ function ArticlePage() {
           />
         </div>
 
+        <div className="mb-6 md:mb-0">
+          <MobileShareBar url={articleUrl} title={article.title} />
+        </div>
+
         <div className="grid grid-cols-12 gap-6 lg:gap-16">
           <aside className="hidden lg:flex col-span-1 flex-col items-center gap-4 pt-2">
-            <div className="sticky top-32 flex flex-col gap-3">
-              <ShareBtn Icon={Twitter} />
-              <ShareBtn Icon={Facebook} />
-              <ShareBtn Icon={Linkedin} />
-              <ShareBtn Icon={Link2} />
-              <div className="w-px h-8 bg-rule mx-auto my-1" />
-              <ShareBtn Icon={Bookmark} />
+            <div className="sticky top-32">
+              <ShareButtons url={articleUrl} title={article.title} layout="vertical" />
             </div>
           </aside>
 
@@ -287,6 +305,37 @@ function ArticlePage() {
               <ArticleBody html={article.content} slot={AD_SLOTS.ARTICLE_IN_CONTENT} />
             ) : (
               <p className="font-serif-body text-lg text-ink-muted italic">No content available.</p>
+            )}
+
+            {readAlsoArticles && readAlsoArticles.length > 0 && (
+              <div className="my-10 space-y-3">
+                <p className="eyebrow text-ink-muted text-xs tracking-widest mb-4">Read Also</p>
+                {readAlsoArticles.map((a: any) => (
+                  <Link
+                    key={a.slug}
+                    to="/article/$slug"
+                    params={{ slug: a.slug }}
+                    className="group flex items-start gap-4 border border-rule hover:border-brand p-4 transition-colors bg-surface"
+                  >
+                    <div className="w-20 h-14 flex-shrink-0 overflow-hidden bg-ink/10">
+                      <img
+                        src={a.featuredImage}
+                        alt={a.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      {a.categoryName && (
+                        <p className="eyebrow text-brand text-[10px] mb-1">{a.categoryName}</p>
+                      )}
+                      <p className="font-display font-bold text-sm leading-snug text-ink group-hover:text-brand transition-colors line-clamp-2">
+                        {a.title}
+                      </p>
+                      <p className="eyebrow text-ink-muted text-[10px] mt-1.5">{a.date}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             )}
 
             {article.tags && article.tags.length > 0 && (
@@ -518,14 +567,6 @@ function CommentSection({
         )}
       </div>
     </section>
-  );
-}
-
-function ShareBtn({ Icon }: { Icon: React.ComponentType<{ size?: number }> }) {
-  return (
-    <button className="size-10 grid place-items-center border border-rule hover:bg-ink hover:text-background hover:border-ink transition-all" aria-label="Share">
-      <Icon size={15} />
-    </button>
   );
 }
 

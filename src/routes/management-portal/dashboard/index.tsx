@@ -1,18 +1,32 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import {
   FileText, FolderOpen, Edit3,
-  TrendingUp, Plus, ArrowRight, Zap, MessageCircle,
+  TrendingUp, Plus, ArrowRight, Zap, MessageCircle, Eye, BarChart2,
 } from "lucide-react";
 import { getDashboardData } from "../../../fns/dashboard";
+import { getMostReadArticles, getTotalViews } from "../../../fns/articles";
 
 export const Route = createFileRoute("/management-portal/dashboard/")({
-  loader: () => getDashboardData(),
+  loader: async () => {
+    const [dashboard, mostRead, totalViews] = await Promise.all([
+      getDashboardData(),
+      getMostReadArticles(),
+      getTotalViews(),
+    ]);
+    return { ...dashboard, mostRead, totalViews };
+  },
   component: DashboardHome,
 });
 
 function DashboardHome() {
   const navigate = useNavigate();
   const data = Route.useLoaderData();
+
+  function fmtViews(n: number) {
+    if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+    if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+    return n.toLocaleString();
+  }
 
   const stats = [
     {
@@ -30,10 +44,10 @@ function DashboardHome() {
       accent: "#CC0000",
     },
     {
-      icon: TrendingUp,
-      label: "Published",
-      value: data.publishedArticles.toLocaleString(),
-      sub: `of ${data.totalArticles} total`,
+      icon: Eye,
+      label: "Total Views",
+      value: fmtViews(data.totalViews),
+      sub: "across all articles",
       accent: "#C5D400",
     },
     {
@@ -182,6 +196,53 @@ function DashboardHome() {
           ))}
         </div>
       </div>
+
+      {/* ── Most Read Articles ──────────────────────────────────────── */}
+      {data.mostRead.length > 0 && (
+        <div className="bg-white" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
+          <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: "2px solid #CC0000" }}>
+            <div className="flex items-center gap-3">
+              <div className="size-1.5 rounded-full" style={{ background: "#CC0000" }} />
+              <h2 className="font-black text-base" style={{ fontFamily: "var(--font-display)", color: "#0A0A0A", letterSpacing: "-0.01em" }}>
+                Most Read Articles
+              </h2>
+            </div>
+            <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: "rgba(0,0,0,0.3)", fontFamily: "var(--font-mono)" }}>
+              by view count
+            </span>
+          </div>
+          <div>
+            {data.mostRead.map((article, idx) => (
+              <div
+                key={article.id}
+                onClick={() => navigate({ to: "/management-portal/dashboard/articles/$articleId", params: { articleId: String(article.id) } })}
+                className="px-6 py-4 flex items-center gap-4 cursor-pointer hover:bg-[#F5F4F0] transition-colors"
+                style={{ borderBottom: idx < data.mostRead.length - 1 ? "1px solid rgba(0,0,0,0.05)" : "none" }}
+              >
+                <span className="font-black text-2xl w-7 shrink-0 text-center" style={{ fontFamily: "var(--font-display)", color: idx === 0 ? "#CC0000" : "rgba(0,0,0,0.15)" }}>
+                  {idx + 1}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-sm truncate" style={{ color: "#0A0A0A", fontFamily: "var(--font-display)" }}>
+                    {article.title}
+                  </p>
+                  {article.categoryName && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: article.categoryColor ?? "rgba(0,0,0,0.3)" }}>
+                      {article.categoryName}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <Eye size={12} style={{ color: "rgba(0,0,0,0.3)" }} />
+                  <span className="font-black text-sm" style={{ fontFamily: "var(--font-mono)", color: "#0A0A0A" }}>
+                    {fmtViews(article.views ?? 0)}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ── Recent Articles ─────────────────────────────────────────── */}
       <div className="bg-white" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>

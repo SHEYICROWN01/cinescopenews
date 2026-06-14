@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
-import { Search, Edit, Trash2, Plus, FileText, Loader2, Zap, Star } from "lucide-react";
+import { Search, Edit, Trash2, Plus, FileText, Loader2, Zap, Star, Eye, Link2, Check, Globe } from "lucide-react";
 import { useState } from "react";
 import { getArticles, deleteArticle } from "../../../../fns/articles";
 
@@ -15,6 +15,15 @@ function ArticlesPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+
+  function handleCopyLink(id: number, slug: string) {
+    const url = `https://www.cinescopeglobal.com/article/${slug}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
+  }
 
   const filtered = articles.filter((a) => {
     const matchesSearch =
@@ -110,6 +119,7 @@ function ArticlesPage() {
                   <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Article</th>
                   <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Category</th>
                   <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Author</th>
+                  <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Views</th>
                   <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</th>
                   <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Date</th>
                   <th className="text-right px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Actions</th>
@@ -155,6 +165,16 @@ function ArticlesPage() {
                       <span className="text-sm text-gray-700">{article.author || "—"}</span>
                     </td>
                     <td className="px-6 py-4">
+                      <div className="flex items-center gap-1.5 text-sm text-gray-700">
+                        <Eye size={13} className="text-gray-400" />
+                        <span className="font-semibold">
+                          {(article.views ?? 0) >= 1000
+                            ? `${((article.views ?? 0) / 1000).toFixed(1)}K`
+                            : (article.views ?? 0).toLocaleString()}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
                       <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${
                         article.status === "published"
                           ? "bg-green-100 text-green-700"
@@ -172,6 +192,28 @@ function ArticlesPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-1">
+                        {article.status === "published" && article.slug && (
+                          <>
+                            <a
+                              href={`https://www.cinescopeglobal.com/article/${article.slug}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+                              title="View on site"
+                            >
+                              <Globe size={16} />
+                            </a>
+                            <button
+                              onClick={() => handleCopyLink(article.id, article.slug!)}
+                              className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+                              title={copiedId === article.id ? "Copied!" : "Copy link"}
+                            >
+                              {copiedId === article.id
+                                ? <Check size={16} className="text-green-600" />
+                                : <Link2 size={16} />}
+                            </button>
+                          </>
+                        )}
                         <button
                           onClick={() => navigate({ to: "/management-portal/dashboard/articles/$articleId", params: { articleId: String(article.id) } })}
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"

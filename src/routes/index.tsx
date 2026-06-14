@@ -259,6 +259,8 @@ function HeroSection({ articles }: { articles: SiteArticle[] }) {
                     src={featured.featuredImage}
                     alt={featured.title}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                    fetchPriority="high"
+                    loading="eager"
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center overflow-hidden" style={{ background: "#0A0A0A" }}>

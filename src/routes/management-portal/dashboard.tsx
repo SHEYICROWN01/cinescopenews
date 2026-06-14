@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, Link, redirect, useNavigate } from "@tanstack/
 import {
   LayoutDashboard, FileText, FolderOpen, Image,
   Settings, Users, DollarSign, CloudSun, TrendingUp,
-  LogOut, Menu, X, ChevronRight, Globe, Shield, MessageCircle,
+  LogOut, Menu, X, ChevronRight, Globe, Shield, MessageCircle, BarChart2,
 } from "lucide-react";
 import { useState } from "react";
 import { getSessionFn, logoutFn, type SessionUser } from "../../fns/auth";
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/management-portal/dashboard")({
   loader: async () => {
     const user = await getSessionFn();
     if (!user) throw redirect({ to: "/management-portal" });
-    const pendingComments = await getPendingCountFn();
+    const pendingComments = await getPendingCountFn().catch(() => 0);
     return { user, pendingComments };
   },
   component: DashboardLayout,
@@ -25,6 +25,7 @@ const NAV_GROUPS = [
       { icon: LayoutDashboard, label: "Dashboard",    href: "/management-portal/dashboard",              exact: true },
       { icon: FileText,        label: "Articles",     href: "/management-portal/dashboard/articles" },
       { icon: FolderOpen,      label: "Categories",   href: "/management-portal/dashboard/categories" },
+      { icon: BarChart2,       label: "Analytics",    href: "/management-portal/dashboard/analytics" },
     ],
   },
   {
@@ -70,7 +71,7 @@ function initials(name: string) {
   return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 }
 
-export function DashboardLayout() {
+function DashboardLayout() {
   const { user, pendingComments } = Route.useLoaderData() as { user: SessionUser; pendingComments: number };
   const navigate  = useNavigate();
   const [open, setOpen] = useState(false);

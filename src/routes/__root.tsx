@@ -1,4 +1,5 @@
 /* Cinescope Global Concept — root layout, meta, fonts, global shell */
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -19,7 +20,21 @@ import { BackToTop } from "@/components/site/BackToTop";
 import { CookieBanner } from "@/components/site/CookieBanner";
 import { ADSENSE_CLIENT, AD_SLOTS } from "@/lib/ads";
 import { getPublicCategories } from "../fns/categories";
-import { getPublishedArticles } from "../fns/articles";
+import { getBreakingTitles } from "../fns/articles";
+import { trackPageViewFn } from "../fns/analytics";
+
+function getOrCreateSessionId(): string {
+  try {
+    let id = localStorage.getItem("_csg_sid");
+    if (!id) {
+      id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      localStorage.setItem("_csg_sid", id);
+    }
+    return id;
+  } catch {
+    return Math.random().toString(36).slice(2);
+  }
+}
 
 function NotFoundComponent() {
   return (
@@ -81,15 +96,12 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   loader: async () => {
     try {
-      const [categories, articles] = await Promise.all([
+      const [categories, breakingTitles] = await Promise.all([
         getPublicCategories(),
-        getPublishedArticles(),
+        getBreakingTitles(),
       ]);
-      const breakingTitles = articles.filter((a) => a.isBreaking).map((a) => a.title);
       return { categories, breakingTitles };
     } catch {
-      // DB may be sleeping (Turso free-tier cold start) — return empty shell so
-      // the site still renders. Individual page loaders will retry on navigation.
       return { categories: [] as Awaited<ReturnType<typeof getPublicCategories>>, breakingTitles: [] as string[] };
     }
   },
@@ -174,7 +186,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Instrument+Serif:ital@0;1&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,600&family=Instrument+Serif:ital@0;1&family=Source+Serif+4:opsz,wght@8..60,400&family=JetBrains+Mono:wght@500&display=swap",
       },
     ],
   }),
@@ -184,9 +196,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
+
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Must be first in <head> — runs before any paint to prevent flash */}
         <script dangerouslySetInnerHTML={{ __html: `
@@ -200,6 +214,17 @@ function RootShell({ children }: { children: React.ReactNode }) {
   } catch(e){}
 })();
         `}} />
+        {GA_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+            <script dangerouslySetInnerHTML={{ __html: `
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','${GA_ID}',{page_path:window.location.pathname});
+            `}} />
+          </>
+        )}
         <HeadContent />
       </head>
       <body>
@@ -216,6 +241,21 @@ function RootComponent() {
   const router = useRouter();
 
   const isManagementPortal = router.state.location.pathname.startsWith('/management-portal');
+
+  // Track every public page view
+  useEffect(() => {
+    const path = router.state.location.pathname;
+    if (path.startsWith("/management-portal")) return;
+    const sessionId = getOrCreateSessionId();
+    trackPageViewFn({
+      data: {
+        path,
+        referrer: document.referrer,
+        ua: navigator.userAgent,
+        sessionId,
+      },
+    }).catch(() => {});
+  }, [router.state.location.pathname]);
 
   if (isManagementPortal) {
     return (

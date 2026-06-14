@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { eq, desc, asc, and, count } from "drizzle-orm";
-import { db } from "../db";
+import { db, withRetry } from "../db";
 import { comments, articles } from "../db/schema";
 import { getSessionFn } from "./auth";
 
@@ -73,11 +73,14 @@ export const getAllCommentsFn = createServerFn({ method: "GET" }).handler(async 
 
 /* ── Admin: pending count for the nav badge ─────────────────────────────── */
 export const getPendingCountFn = createServerFn({ method: "GET" }).handler(async () => {
-  const [row] = await db
-    .select({ n: count() })
-    .from(comments)
-    .where(eq(comments.status, "pending"));
-  return row?.n ?? 0;
+  try {
+    const [row] = await withRetry(() =>
+      db.select({ n: count() }).from(comments).where(eq(comments.status, "pending"))
+    );
+    return row?.n ?? 0;
+  } catch {
+    return 0;
+  }
 });
 
 /* ── Admin: set comment status ──────────────────────────────────────────── */

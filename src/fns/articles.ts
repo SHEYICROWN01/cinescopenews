@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { eq, desc, and, or, like, count } from "drizzle-orm";
+import { eq, desc, ne, and, or, like, count, inArray, sum, sql } from "drizzle-orm";
 import { db, withRetry } from "../db";
 import { articles, categories, type NewArticle } from "../db/schema";
 
@@ -13,11 +13,8 @@ function parseTags(tags: string | null): string[] {
   return tags ? tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
 }
 
-/* Generate a deterministic, beautiful fallback image via Picsum.
-   The seed is the article slug so the same article always gets the same photo. */
-function resolveImage(url: string | null, slug: string): string {
-  if (url && url.trim().length > 8) return url.trim();
-  return `https://picsum.photos/seed/${encodeURIComponent(slug)}/1200/675`;
+function resolveImage(url: string | null): string {
+  return url && url.trim().length > 8 ? url.trim() : "";
 }
 
 const publicArticleSelect = {
@@ -44,6 +41,18 @@ function computeReadTime(content: string | null | undefined): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+// Lean query — only used by root loader for the breaking news ticker
+export const getBreakingTitles = createServerFn({ method: "GET" }).handler(async () => {
+  const rows = await withRetry(() =>
+    db.select({ title: articles.title })
+      .from(articles)
+      .where(and(eq(articles.status, "published"), eq(articles.isBreaking, true)))
+      .orderBy(desc(articles.publishedAt))
+      .limit(8)
+  );
+  return rows.map((r) => r.title);
+});
+
 export const getPublishedArticles = createServerFn({ method: "GET" }).handler(async () => {
   const rows = await withRetry(() =>
     db
@@ -52,11 +61,11 @@ export const getPublishedArticles = createServerFn({ method: "GET" }).handler(as
       .leftJoin(categories, eq(articles.categoryId, categories.id))
       .where(eq(articles.status, "published"))
       .orderBy(desc(articles.publishedAt))
-      .limit(80)
+      .limit(60)
   );
   return rows.map((r) => ({
     ...r,
-    featuredImage: resolveImage(r.featuredImage, r.slug),
+    featuredImage: resolveImage(r.featuredImage),
     tags: parseTags(r.tags),
     date: formatDate(r.publishedAt, r.createdAt),
   }));
@@ -91,7 +100,7 @@ export const getPublishedArticlesByCategory = createServerFn({ method: "GET" })
     return {
       articles: rows.map((r) => ({
         ...r,
-        featuredImage: resolveImage(r.featuredImage, r.slug),
+        featuredImage: resolveImage(r.featuredImage),
         tags: parseTags(r.tags),
         date: formatDate(r.publishedAt, r.createdAt),
       })),
@@ -113,6 +122,7 @@ export const getPublishedArticleBySlug = createServerFn({ method: "GET" })
           seoTitle:       articles.seoTitle,
           seoDescription: articles.seoDescription,
           categoryId:     articles.categoryId,
+          readAlso:       articles.readAlso,
         })
         .from(articles)
         .leftJoin(categories, eq(articles.categoryId, categories.id))
@@ -121,31 +131,52 @@ export const getPublishedArticleBySlug = createServerFn({ method: "GET" })
 
     if (!row) return null;
 
-    const related = row.categoryId
-      ? (await withRetry(() =>
-          db
-            .select(publicArticleSelect)
-            .from(articles)
-            .leftJoin(categories, eq(articles.categoryId, categories.id))
-            .where(and(eq(articles.status, "published"), eq(articles.categoryId, row.categoryId!)))
-            .orderBy(desc(articles.publishedAt))
-            .limit(4)
-        ))
-          .filter((r) => r.slug !== slug)
-          .slice(0, 3)
-          .map((r) => ({ ...r, tags: parseTags(r.tags), date: formatDate(r.publishedAt, r.createdAt) }))
-      : [];
+    const readAlsoIds = (row.readAlso ?? "").split(",").map(Number).filter(Boolean);
+
+    // Run readAlso + related in parallel — they're independent of each other
+    const [readAlsoRows, relatedRows] = await withRetry(() =>
+      Promise.all([
+        readAlsoIds.length
+          ? db
+              .select(publicArticleSelect)
+              .from(articles)
+              .leftJoin(categories, eq(articles.categoryId, categories.id))
+              .where(and(eq(articles.status, "published"), inArray(articles.id, readAlsoIds)))
+          : Promise.resolve([]),
+        row.categoryId
+          ? db
+              .select(publicArticleSelect)
+              .from(articles)
+              .leftJoin(categories, eq(articles.categoryId, categories.id))
+              .where(and(
+                eq(articles.status, "published"),
+                eq(articles.categoryId, row.categoryId!),
+                ne(articles.slug, slug),          // exclude current article in SQL
+              ))
+              .orderBy(desc(articles.publishedAt))
+              .limit(3)                            // exactly 3, no client-side slice needed
+          : Promise.resolve([]),
+      ])
+    );
 
     return {
       article: {
         ...row,
-        featuredImage: resolveImage(row.featuredImage, row.slug),
+        featuredImage: resolveImage(row.featuredImage),
         tags: parseTags(row.tags),
         date: formatDate(row.publishedAt, row.createdAt),
       },
-      related: related.map((r) => ({
+      related: relatedRows.map((r) => ({
         ...r,
-        featuredImage: resolveImage(r.featuredImage, r.slug),
+        featuredImage: resolveImage(r.featuredImage),
+        tags: parseTags(r.tags),
+        date: formatDate(r.publishedAt, r.createdAt),
+      })),
+      readAlsoArticles: readAlsoRows.map((r) => ({
+        ...r,
+        featuredImage: resolveImage(r.featuredImage),
+        tags: parseTags(r.tags),
+        date: formatDate(r.publishedAt, r.createdAt),
       })),
     };
   });
@@ -165,7 +196,7 @@ export const getArticlesByAuthor = createServerFn({ method: "GET" })
       .orderBy(desc(articles.publishedAt));
     const mapped = rows.map((r) => ({
       ...r,
-      featuredImage: resolveImage(r.featuredImage, r.slug),
+      featuredImage: resolveImage(r.featuredImage),
       tags: parseTags(r.tags),
       date: formatDate(r.publishedAt, r.createdAt),
     }));
@@ -186,7 +217,7 @@ export const getArticlesByTag = createServerFn({ method: "GET" })
       .orderBy(desc(articles.publishedAt));
     return rows.map((r) => ({
       ...r,
-      featuredImage: resolveImage(r.featuredImage, r.slug),
+      featuredImage: resolveImage(r.featuredImage),
       tags: parseTags(r.tags),
       date: formatDate(r.publishedAt, r.createdAt),
     }));
@@ -217,7 +248,7 @@ export const searchArticles = createServerFn({ method: "GET" })
       .limit(40);
     return rows.map((r) => ({
       ...r,
-      featuredImage: resolveImage(r.featuredImage, r.slug),
+      featuredImage: resolveImage(r.featuredImage),
       tags: parseTags(r.tags),
       date: formatDate(r.publishedAt, r.createdAt),
     }));
@@ -233,6 +264,7 @@ export const getArticles = createServerFn({ method: "GET" }).handler(async () =>
       status:      articles.status,
       isBreaking:  articles.isBreaking,
       isFeatured:  articles.isFeatured,
+      views:       articles.views,
       createdAt:   articles.createdAt,
       publishedAt: articles.publishedAt,
       categoryName: categories.name,
@@ -241,6 +273,41 @@ export const getArticles = createServerFn({ method: "GET" }).handler(async () =>
     .from(articles)
     .leftJoin(categories, eq(articles.categoryId, categories.id))
     .orderBy(desc(articles.createdAt));
+});
+
+export const incrementArticleViews = createServerFn({ method: "POST" })
+  .inputValidator((id: unknown) => id as number)
+  .handler(async ({ data: id }) => {
+    await db
+      .update(articles)
+      .set({ views: sql`COALESCE(${articles.views}, 0) + 1` })
+      .where(eq(articles.id, id));
+    return { ok: true };
+  });
+
+export const getMostReadArticles = createServerFn({ method: "GET" }).handler(async () => {
+  const rows = await db
+    .select({
+      id:           articles.id,
+      title:        articles.title,
+      slug:         articles.slug,
+      views:        articles.views,
+      categoryName: categories.name,
+      categoryColor: categories.color,
+    })
+    .from(articles)
+    .leftJoin(categories, eq(articles.categoryId, categories.id))
+    .where(eq(articles.status, "published"))
+    .orderBy(desc(articles.views))
+    .limit(5);
+  return rows;
+});
+
+export const getTotalViews = createServerFn({ method: "GET" }).handler(async () => {
+  const [row] = await db
+    .select({ total: sum(articles.views) })
+    .from(articles);
+  return Number(row?.total ?? 0);
 });
 
 export const createArticle = createServerFn({ method: "POST" })
@@ -272,6 +339,7 @@ export const createArticle = createServerFn({ method: "POST" })
       tags:                 data.tags ?? "",
       seoTitle:             data.seoTitle ?? "",
       seoDescription:       data.seoDescription ?? "",
+      readAlso:             (data as any).readAlso ?? "",
       publishedAt:          data.status === "published" ? new Date().toISOString() : null,
     });
 
@@ -298,6 +366,7 @@ export const getArticleById = createServerFn({ method: "GET" })
         tags:                 articles.tags,
         seoTitle:             articles.seoTitle,
         seoDescription:       articles.seoDescription,
+        readAlso:             articles.readAlso,
         publishedAt:          articles.publishedAt,
         createdAt:            articles.createdAt,
         categoryName:         categories.name,
@@ -316,6 +385,7 @@ export const updateArticle = createServerFn({ method: "POST" })
     categoryId: number | null; author: string;
     status: string; isBreaking: boolean; isFeatured: boolean;
     tags: string; seoTitle: string; seoDescription: string;
+    readAlso?: string;
   })
   .handler(async ({ data }) => {
     if (!data.title?.trim()) throw new Error("Title is required");
@@ -335,6 +405,7 @@ export const updateArticle = createServerFn({ method: "POST" })
         tags:                 data.tags ?? "",
         seoTitle:             data.seoTitle ?? "",
         seoDescription:       data.seoDescription ?? "",
+        readAlso:             data.readAlso ?? "",
         publishedAt:          data.status === "published" ? new Date().toISOString() : null,
         updatedAt:            new Date().toISOString(),
       })

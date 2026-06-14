@@ -69,6 +69,40 @@ async function migrate() {
 
   console.log("✓ Tables created: categories, articles, users");
 
+  /* Add columns introduced after initial schema (safe to re-run) */
+  const columnMigrations = [
+    "ALTER TABLE articles ADD COLUMN featured_image_caption TEXT DEFAULT ''",
+    "ALTER TABLE articles ADD COLUMN read_time_minutes INTEGER DEFAULT 1",
+    "ALTER TABLE articles ADD COLUMN read_also TEXT DEFAULT ''",
+    "ALTER TABLE articles ADD COLUMN views INTEGER NOT NULL DEFAULT 0",
+  ];
+
+  /* Page views analytics table */
+  await client.execute(`
+    CREATE TABLE IF NOT EXISTS page_views (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      path       TEXT NOT NULL,
+      source     TEXT NOT NULL DEFAULT 'Direct',
+      country    TEXT NOT NULL DEFAULT '',
+      device     TEXT NOT NULL DEFAULT 'Desktop',
+      browser    TEXT NOT NULL DEFAULT 'Other',
+      session_id TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
+  /* ── Article query indexes (status+published_at is the hot path for every page) ── */
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_articles_status_pub   ON articles(status, published_at DESC)`);
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_articles_category_id  ON articles(category_id)`);
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_articles_is_breaking  ON articles(is_breaking) WHERE is_breaking = 1`);
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_articles_views        ON articles(views DESC)`);
+
+  /* ── Page-view analytics indexes ── */
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_pv_created ON page_views(created_at)`);
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_pv_session ON page_views(session_id)`);
+  for (const sql of columnMigrations) {
+    try { await client.execute(sql); } catch { /* column already exists */ }
+  }
+
   /* Seed default super_admin on first run */
   const existing = await client.execute("SELECT COUNT(*) as cnt FROM users");
   const count = Number((existing.rows[0] as unknown as { cnt: number }).cnt);

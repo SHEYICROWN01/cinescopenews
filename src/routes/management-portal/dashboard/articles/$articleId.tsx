@@ -4,10 +4,10 @@ import {
   Bold, Italic, Underline, Link2, List, ListOrdered,
   AlignLeft, AlignCenter, AlignRight, Maximize2,
   ImagePlus, Quote, Heading2, Heading3, Minus,
-  ChevronUp, ChevronDown, Globe, Zap, Upload, Loader2, Type,
+  ChevronUp, ChevronDown, Globe, Zap, Upload, Loader2, Type, ArrowRight,
 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { getArticleById, updateArticle } from "../../../../fns/articles";
+import { getArticleById, updateArticle, getArticles } from "../../../../fns/articles";
 import { getCategories } from "../../../../fns/categories";
 import type { Category } from "../../../../db/schema";
 
@@ -15,9 +15,9 @@ export const Route = createFileRoute("/management-portal/dashboard/articles/$art
   loader: async ({ params }) => {
     const id = Number(params.articleId);
     if (isNaN(id)) throw notFound();
-    const [article, cats] = await Promise.all([getArticleById({ data: id }), getCategories()]);
+    const [article, cats, allArticles] = await Promise.all([getArticleById({ data: id }), getCategories(), getArticles()]);
     if (!article) throw notFound();
-    return { article, categories: cats };
+    return { article, categories: cats, allArticles };
   },
   notFoundComponent: () => (
     <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -357,6 +357,92 @@ function TagsInput({ tags, onChange }: { tags: string[]; onChange: (t: string[])
   );
 }
 
+// ─── Read Also Selector ───────────────────────────────────────────────────────
+
+type ArticleListItem = { id: number; title: string; slug: string; status: string };
+
+function ReadAlsoSelector({
+  selected, onChange, articles: allArticles,
+}: {
+  selected: number[];
+  onChange: (ids: number[]) => void;
+  articles: ArticleListItem[];
+}) {
+  const [query, setQuery] = useState("");
+
+  const filtered = allArticles.filter(
+    (a) => a.title.toLowerCase().includes(query.toLowerCase()) && !selected.includes(a.id)
+  ).slice(0, 6);
+
+  const selectedArticles = allArticles.filter((a) => selected.includes(a.id));
+
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden bg-white">
+      {/* Header */}
+      <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-gray-200">
+        <Link2 size={13} className="text-brand flex-shrink-0" />
+        <span className="text-[11px] font-bold text-gray-600 uppercase tracking-widest">
+          Read Also — Reference Links
+        </span>
+      </div>
+
+      <div className="p-4 space-y-3">
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Link readers to related articles. Selected articles will appear as a{" "}
+          <strong className="text-gray-700">"Read Also"</strong> block on the published page.
+        </p>
+
+        {/* Selected articles */}
+        {selectedArticles.map((a) => (
+          <div key={a.id} className="flex items-center gap-2.5 bg-red-50 border border-red-100 rounded-lg px-3 py-2.5">
+            <ArrowRight size={13} className="text-brand flex-shrink-0" />
+            <p className="flex-1 text-sm font-medium text-gray-800 leading-snug line-clamp-2 min-w-0">{a.title}</p>
+            <button
+              type="button"
+              onClick={() => onChange(selected.filter((id) => id !== a.id))}
+              className="text-gray-400 hover:text-red-500 flex-shrink-0 transition-colors"
+            >
+              <X size={13} />
+            </button>
+          </div>
+        ))}
+
+        {/* Search input */}
+        <div className="relative">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search articles to reference..."
+            className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand bg-white"
+          />
+          {query.trim() && (
+            <div className="absolute z-20 top-full left-0 right-0 mt-1 border border-gray-200 rounded-lg overflow-hidden shadow-lg bg-white">
+              {filtered.length === 0 ? (
+                <p className="text-xs text-gray-400 px-3 py-2.5">No articles found</p>
+              ) : (
+                filtered.map((a) => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    onClick={() => { onChange([...selected, a.id]); setQuery(""); }}
+                    className="w-full text-left px-3 py-2.5 text-sm hover:bg-red-50 border-b border-gray-100 last:border-0 flex items-center gap-2 transition-colors"
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${a.status === "published" ? "bg-green-400" : "bg-yellow-400"}`} />
+                    <span className="truncate text-gray-800 font-medium">{a.title}</span>
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+
+        <p className="text-xs text-gray-400">Search and select published articles to reference</p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Sidebar Card ─────────────────────────────────────────────────────────────
 
 function SidebarCard({ title, children, defaultOpen = true }: {
@@ -456,7 +542,7 @@ function PreviewModal({ title, subtitle, featuredImage, content, author, categor
 
 function EditArticlePage() {
   const navigate = useNavigate();
-  const { article, categories } = Route.useLoaderData() as { article: any; categories: Category[] };
+  const { article, categories, allArticles } = Route.useLoaderData() as { article: any; categories: Category[]; allArticles: ArticleListItem[] };
 
   // Parse saved HTML into blocks on load
   const [blocks, setBlocks] = useState<Block[]>(() => parseHtmlToBlocks(article.content ?? ""));
@@ -474,6 +560,9 @@ function EditArticlePage() {
   );
   const [seoTitle, setSeoTitle]         = useState(article.seoTitle ?? "");
   const [seoDescription, setSeoDescription] = useState(article.seoDescription ?? "");
+  const [readAlso, setReadAlso]         = useState<number[]>(
+    article.readAlso ? (article.readAlso as string).split(",").map(Number).filter(Boolean) : []
+  );
   const [saving, setSaving]             = useState(false);
   const [showPreview, setShowPreview]   = useState(false);
   const [showAddMenu, setShowAddMenu]   = useState<number | null>(null);
@@ -550,6 +639,7 @@ function EditArticlePage() {
           tags:           tags.join(","),
           seoTitle:       seoTitle.trim() || title.trim(),
           seoDescription: seoDescription.trim(),
+          readAlso:       readAlso.join(","),
         },
       });
       navigate({ to: "/management-portal/dashboard/articles" });
@@ -593,6 +683,17 @@ function EditArticlePage() {
               className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
               <Eye size={16} /> Preview
             </button>
+            {isPublished && article.slug && (
+              <a
+                href={`https://www.cinescopeglobal.com/article/${article.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                title="View published article on the website"
+              >
+                <Globe size={16} /> View on Site
+              </a>
+            )}
             <button type="button" onClick={() => handleSave(false)} disabled={saving}
               className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors disabled:opacity-50">
               {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Save Draft
@@ -789,6 +890,12 @@ function EditArticlePage() {
               <div className="border-t border-gray-100" />
               <Toggle checked={allowComments} onChange={setAllowComments} label="Allow Comments" />
             </SidebarCard>
+
+            <ReadAlsoSelector
+              selected={readAlso}
+              onChange={setReadAlso}
+              articles={allArticles.filter((a) => a.id !== article.id)}
+            />
 
             <SidebarCard title="SEO" defaultOpen={false}>
               <div>
