@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite build && wrangler dev dist/server/index.js --config dist/server/wrangler.json --port 8080",
     "build": "vite build",
+    "deploy": "vite build && wrangler deploy dist/server/index.js --config dist/server/wrangler.json",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
