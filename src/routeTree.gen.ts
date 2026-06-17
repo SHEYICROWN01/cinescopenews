@@ -30,6 +30,7 @@ import { Route as ManagementPortalDashboardMediaRouteImport } from './routes/man
 import { Route as ManagementPortalDashboardMarketRouteImport } from './routes/management-portal/dashboard/market'
 import { Route as ManagementPortalDashboardCommentsRouteImport } from './routes/management-portal/dashboard/comments'
 import { Route as ManagementPortalDashboardCategoriesRouteImport } from './routes/management-portal/dashboard/categories'
+import { Route as ManagementPortalDashboardAuthorsRouteImport } from './routes/management-portal/dashboard/authors'
 import { Route as ManagementPortalDashboardArticlesRouteImport } from './routes/management-portal/dashboard/articles'
 import { Route as ManagementPortalDashboardAnalyticsRouteImport } from './routes/management-portal/dashboard/analytics'
 import { Route as ManagementPortalDashboardAdsRouteImport } from './routes/management-portal/dashboard/ads'
@@ -153,6 +154,12 @@ const ManagementPortalDashboardCategoriesRoute =
     path: '/categories',
     getParentRoute: () => ManagementPortalDashboardRoute,
   } as any)
+const ManagementPortalDashboardAuthorsRoute =
+  ManagementPortalDashboardAuthorsRouteImport.update({
+    id: '/authors',
+    path: '/authors',
+    getParentRoute: () => ManagementPortalDashboardRoute,
+  } as any)
 const ManagementPortalDashboardArticlesRoute =
   ManagementPortalDashboardArticlesRouteImport.update({
     id: '/articles',
@@ -219,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
   '/management-portal/dashboard/analytics': typeof ManagementPortalDashboardAnalyticsRoute
   '/management-portal/dashboard/articles': typeof ManagementPortalDashboardArticlesRouteWithChildren
+  '/management-portal/dashboard/authors': typeof ManagementPortalDashboardAuthorsRoute
   '/management-portal/dashboard/categories': typeof ManagementPortalDashboardCategoriesRouteWithChildren
   '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
   '/management-portal/dashboard/market': typeof ManagementPortalDashboardMarketRoute
@@ -248,6 +256,7 @@ export interface FileRoutesByTo {
   '/management-portal': typeof ManagementPortalIndexRoute
   '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
   '/management-portal/dashboard/analytics': typeof ManagementPortalDashboardAnalyticsRoute
+  '/management-portal/dashboard/authors': typeof ManagementPortalDashboardAuthorsRoute
   '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
   '/management-portal/dashboard/market': typeof ManagementPortalDashboardMarketRoute
   '/management-portal/dashboard/media': typeof ManagementPortalDashboardMediaRoute
@@ -279,6 +288,7 @@ export interface FileRoutesById {
   '/management-portal/dashboard/ads': typeof ManagementPortalDashboardAdsRoute
   '/management-portal/dashboard/analytics': typeof ManagementPortalDashboardAnalyticsRoute
   '/management-portal/dashboard/articles': typeof ManagementPortalDashboardArticlesRouteWithChildren
+  '/management-portal/dashboard/authors': typeof ManagementPortalDashboardAuthorsRoute
   '/management-portal/dashboard/categories': typeof ManagementPortalDashboardCategoriesRouteWithChildren
   '/management-portal/dashboard/comments': typeof ManagementPortalDashboardCommentsRoute
   '/management-portal/dashboard/market': typeof ManagementPortalDashboardMarketRoute
@@ -312,6 +322,7 @@ export interface FileRouteTypes {
     | '/management-portal/dashboard/ads'
     | '/management-portal/dashboard/analytics'
     | '/management-portal/dashboard/articles'
+    | '/management-portal/dashboard/authors'
     | '/management-portal/dashboard/categories'
     | '/management-portal/dashboard/comments'
     | '/management-portal/dashboard/market'
@@ -341,6 +352,7 @@ export interface FileRouteTypes {
     | '/management-portal'
     | '/management-portal/dashboard/ads'
     | '/management-portal/dashboard/analytics'
+    | '/management-portal/dashboard/authors'
     | '/management-portal/dashboard/comments'
     | '/management-portal/dashboard/market'
     | '/management-portal/dashboard/media'
@@ -371,6 +383,7 @@ export interface FileRouteTypes {
     | '/management-portal/dashboard/ads'
     | '/management-portal/dashboard/analytics'
     | '/management-portal/dashboard/articles'
+    | '/management-portal/dashboard/authors'
     | '/management-portal/dashboard/categories'
     | '/management-portal/dashboard/comments'
     | '/management-portal/dashboard/market'
@@ -551,6 +564,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagementPortalDashboardCategoriesRouteImport
       parentRoute: typeof ManagementPortalDashboardRoute
     }
+    '/management-portal/dashboard/authors': {
+      id: '/management-portal/dashboard/authors'
+      path: '/authors'
+      fullPath: '/management-portal/dashboard/authors'
+      preLoaderRoute: typeof ManagementPortalDashboardAuthorsRouteImport
+      parentRoute: typeof ManagementPortalDashboardRoute
+    }
     '/management-portal/dashboard/articles': {
       id: '/management-portal/dashboard/articles'
       path: '/articles'
@@ -653,6 +673,7 @@ interface ManagementPortalDashboardRouteChildren {
   ManagementPortalDashboardAdsRoute: typeof ManagementPortalDashboardAdsRoute
   ManagementPortalDashboardAnalyticsRoute: typeof ManagementPortalDashboardAnalyticsRoute
   ManagementPortalDashboardArticlesRoute: typeof ManagementPortalDashboardArticlesRouteWithChildren
+  ManagementPortalDashboardAuthorsRoute: typeof ManagementPortalDashboardAuthorsRoute
   ManagementPortalDashboardCategoriesRoute: typeof ManagementPortalDashboardCategoriesRouteWithChildren
   ManagementPortalDashboardCommentsRoute: typeof ManagementPortalDashboardCommentsRoute
   ManagementPortalDashboardMarketRoute: typeof ManagementPortalDashboardMarketRoute
@@ -670,6 +691,8 @@ const ManagementPortalDashboardRouteChildren: ManagementPortalDashboardRouteChil
       ManagementPortalDashboardAnalyticsRoute,
     ManagementPortalDashboardArticlesRoute:
       ManagementPortalDashboardArticlesRouteWithChildren,
+    ManagementPortalDashboardAuthorsRoute:
+      ManagementPortalDashboardAuthorsRoute,
     ManagementPortalDashboardCategoriesRoute:
       ManagementPortalDashboardCategoriesRouteWithChildren,
     ManagementPortalDashboardCommentsRoute:

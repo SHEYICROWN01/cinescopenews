@@ -96,6 +96,23 @@ async function migrate() {
   await client.execute(`CREATE INDEX IF NOT EXISTS idx_articles_is_breaking  ON articles(is_breaking) WHERE is_breaking = 1`);
   await client.execute(`CREATE INDEX IF NOT EXISTS idx_articles_views        ON articles(views DESC)`);
 
+  /* ── Authors table ── */
+  await client.execute(`
+    CREATE TABLE IF NOT EXISTS authors (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      name       TEXT NOT NULL,
+      email      TEXT NOT NULL DEFAULT '',
+      bio        TEXT DEFAULT '',
+      avatar     TEXT DEFAULT '',
+      title      TEXT DEFAULT '',
+      twitter    TEXT DEFAULT '',
+      instagram  TEXT DEFAULT '',
+      is_active  INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
+
   /* ── Advertisements table ── */
   await client.execute(`
     CREATE TABLE IF NOT EXISTS advertisements (

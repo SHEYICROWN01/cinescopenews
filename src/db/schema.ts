@@ -71,6 +71,23 @@ export const pageViews = sqliteTable("page_views", {
   createdAt: text("created_at").notNull().default(sql`(datetime('now'))`),
 });
 
+export const authors = sqliteTable("authors", {
+  id:        integer("id").primaryKey({ autoIncrement: true }),
+  name:      text("name").notNull(),
+  email:     text("email").notNull().default(""),
+  bio:       text("bio").default(""),
+  avatar:    text("avatar").default(""),
+  title:     text("title").default(""),
+  twitter:   text("twitter").default(""),
+  instagram: text("instagram").default(""),
+  isActive:  integer("is_active", { mode: "boolean" }).notNull().default(true),
+  createdAt: text("created_at").notNull().default(sql`(datetime('now'))`),
+  updatedAt: text("updated_at").notNull().default(sql`(datetime('now'))`),
+});
+
+export type Author    = typeof authors.$inferSelect;
+export type NewAuthor = typeof authors.$inferInsert;
+
 export const advertisements = sqliteTable("advertisements", {
   id:          integer("id").primaryKey({ autoIncrement: true }),
   title:       text("title").notNull().default(""),

@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, Link, redirect, useNavigate } from "@tanstack/
 import {
   LayoutDashboard, FileText, FolderOpen, Image,
   Settings, Users, DollarSign, CloudSun, TrendingUp,
-  LogOut, Menu, X, ChevronRight, Globe, Shield, MessageCircle, BarChart2,
+  LogOut, Menu, X, ChevronRight, Globe, Shield, MessageCircle, BarChart2, Pen,
 } from "lucide-react";
 import { useState } from "react";
 import { getSessionFn, logoutFn, type SessionUser } from "../../fns/auth";
@@ -25,6 +25,7 @@ const NAV_GROUPS = [
       { icon: LayoutDashboard, label: "Dashboard",    href: "/management-portal/dashboard",              exact: true },
       { icon: FileText,        label: "Articles",     href: "/management-portal/dashboard/articles" },
       { icon: FolderOpen,      label: "Categories",   href: "/management-portal/dashboard/categories" },
+      { icon: Pen,             label: "Authors",      href: "/management-portal/dashboard/authors" },
       { icon: BarChart2,       label: "Analytics",    href: "/management-portal/dashboard/analytics" },
     ],
   },
@@ -55,7 +56,7 @@ const NAV_GROUPS = [
       { icon: Settings, label: "Settings", href: "/management-portal/dashboard/settings" },
     ],
   },
-] as const;
+];
 
 const ROLE_CONFIG = {
   super_admin: { label: "Super Admin", bg: "#C5D400", text: "#0A0A0A" },
@@ -148,7 +149,7 @@ function DashboardLayout() {
                   return (
                     <Link
                       key={item.href}
-                      to={item.href}
+                      to={item.href as any}
                       onClick={() => setOpen(false)}
                       activeOptions={"exact" in item && item.exact ? { exact: true } : undefined}
                       className="flex items-center gap-2.5 px-2 py-2 text-[13px] font-medium transition-all"

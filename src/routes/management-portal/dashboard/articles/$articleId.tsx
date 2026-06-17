@@ -9,15 +9,16 @@ import {
 import { useState, useRef, useCallback, useEffect } from "react";
 import { getArticleById, updateArticle, getArticles } from "../../../../fns/articles";
 import { getCategories } from "../../../../fns/categories";
+import { getAuthorsFn } from "../../../../fns/authors";
 import type { Category } from "../../../../db/schema";
 
 export const Route = createFileRoute("/management-portal/dashboard/articles/$articleId")({
   loader: async ({ params }) => {
     const id = Number(params.articleId);
     if (isNaN(id)) throw notFound();
-    const [article, cats, allArticles] = await Promise.all([getArticleById({ data: id }), getCategories(), getArticles()]);
+    const [article, cats, allArticles, authors] = await Promise.all([getArticleById({ data: id }), getCategories(), getArticles(), getAuthorsFn()]);
     if (!article) throw notFound();
-    return { article, categories: cats, allArticles };
+    return { article, categories: cats, allArticles, authors };
   },
   notFoundComponent: () => (
     <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -542,7 +543,7 @@ function PreviewModal({ title, subtitle, featuredImage, content, author, categor
 
 function EditArticlePage() {
   const navigate = useNavigate();
-  const { article, categories, allArticles } = Route.useLoaderData() as { article: any; categories: Category[]; allArticles: ArticleListItem[] };
+  const { article, categories, allArticles, authors: dbAuthors } = Route.useLoaderData() as { article: any; categories: Category[]; allArticles: ArticleListItem[]; authors: { id: number; name: string; title: string | null; avatar: string | null }[] };
 
   // Parse saved HTML into blocks on load
   const [blocks, setBlocks] = useState<Block[]>(() => parseHtmlToBlocks(article.content ?? ""));
@@ -733,13 +734,17 @@ function EditArticlePage() {
             />
 
             <div className="flex items-center gap-4 pb-6 mb-6 border-b-2 border-gray-900">
-              <div className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
-                {author ? author.charAt(0).toUpperCase() : "?"}
-              </div>
+              {(() => {
+                const a = dbAuthors.find((x) => x.name === author);
+                return a?.avatar
+                  ? <img src={a.avatar} alt={a.name} className="w-10 h-10 rounded-full object-cover flex-shrink-0 border border-gray-200" />
+                  : <div className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center font-bold text-sm flex-shrink-0">{author ? author.charAt(0).toUpperCase() : "?"}</div>;
+              })()}
               <div>
-                <input type="text" value={author} onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="Author name"
-                  className="block font-semibold text-gray-800 text-sm outline-none bg-transparent placeholder:text-gray-300" />
+                <p className="font-semibold text-gray-800 text-sm">{author || <span className="text-gray-300">Select author in sidebar →</span>}</p>
+                {dbAuthors.find((x) => x.name === author)?.title && (
+                  <p className="text-xs text-gray-400">{dbAuthors.find((x) => x.name === author)?.title}</p>
+                )}
                 <p className="text-xs text-gray-400 mt-0.5">
                   {article.publishedAt
                     ? `Published ${new Date(article.publishedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`
@@ -881,6 +886,22 @@ function EditArticlePage() {
 
             <SidebarCard title="Tags">
               <TagsInput tags={tags} onChange={setTags} />
+            </SidebarCard>
+
+            <SidebarCard title="Author">
+              <select
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand bg-white"
+              >
+                <option value="">Select author...</option>
+                {dbAuthors.map((a) => (
+                  <option key={a.id} value={a.name}>{a.name}{a.title ? ` — ${a.title}` : ""}</option>
+                ))}
+              </select>
+              {dbAuthors.length === 0 && (
+                <p className="text-xs text-gray-400 mt-1">No authors yet — <a href="/management-portal/dashboard/authors" className="underline text-brand">add one first</a>.</p>
+              )}
             </SidebarCard>
 
             <SidebarCard title="Options">
