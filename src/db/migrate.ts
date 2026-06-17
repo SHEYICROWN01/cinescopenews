@@ -96,6 +96,27 @@ async function migrate() {
   await client.execute(`CREATE INDEX IF NOT EXISTS idx_articles_is_breaking  ON articles(is_breaking) WHERE is_breaking = 1`);
   await client.execute(`CREATE INDEX IF NOT EXISTS idx_articles_views        ON articles(views DESC)`);
 
+  /* ── Advertisements table ── */
+  await client.execute(`
+    CREATE TABLE IF NOT EXISTS advertisements (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      title       TEXT NOT NULL DEFAULT '',
+      advertiser  TEXT NOT NULL DEFAULT '',
+      image_url   TEXT NOT NULL DEFAULT '',
+      link_url    TEXT NOT NULL DEFAULT '',
+      position    TEXT NOT NULL,
+      status      TEXT NOT NULL DEFAULT 'active',
+      start_date  TEXT,
+      end_date    TEXT,
+      clicks      INTEGER NOT NULL DEFAULT 0,
+      impressions INTEGER NOT NULL DEFAULT 0,
+      notes       TEXT DEFAULT '',
+      created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_ads_position_status ON advertisements(position, status)`);
+
   /* ── Page-view analytics indexes ── */
   await client.execute(`CREATE INDEX IF NOT EXISTS idx_pv_created ON page_views(created_at)`);
   await client.execute(`CREATE INDEX IF NOT EXISTS idx_pv_session ON page_views(session_id)`);

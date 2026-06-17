@@ -160,7 +160,7 @@ function CategoryPage() {
                     <ArticleCard key={a.slug} article={a} />
                     {(i + 1) % 6 === 0 && i < grid.length - 1 && (
                       <div key={`ad-${i}`} className="md:col-span-2">
-                        <AdSlot format="leaderboard" slot={AD_SLOTS.LEADERBOARD_TOP} />
+                        <AdSlot format="leaderboard" slot={AD_SLOTS.LEADERBOARD_TOP} position="leaderboard-top" />
                       </div>
                     )}
                   </>
@@ -247,7 +247,7 @@ function CategoryPage() {
                 </div>
               </div>
             )}
-            <AdSlot format="mpu" slot={AD_SLOTS.SIDEBAR_MPU} />
+            <AdSlot format="mpu" slot={AD_SLOTS.SIDEBAR_MPU} position="sidebar-mpu" />
             <NewsletterCard />
           </aside>
         </div>

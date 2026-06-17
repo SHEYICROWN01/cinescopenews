@@ -111,7 +111,7 @@ function SearchPage() {
                       {/* In-feed ad after every 6th result */}
                       {(i + 1) % 6 === 0 && i < results.length - 1 && (
                         <div key={`ad-${i}`} className="md:col-span-2">
-                          <AdSlot format="leaderboard" slot={AD_SLOTS.LEADERBOARD_TOP} />
+                          <AdSlot format="leaderboard" slot={AD_SLOTS.LEADERBOARD_TOP} position="leaderboard-top" />
                         </div>
                       )}
                     </>
@@ -122,7 +122,7 @@ function SearchPage() {
               {/* Sidebar */}
               <aside className="col-span-12 lg:col-span-4">
                 <div className="lg:sticky lg:top-28 space-y-8">
-                  <AdSlot format="mpu" slot={AD_SLOTS.SIDEBAR_MPU} />
+                  <AdSlot format="mpu" slot={AD_SLOTS.SIDEBAR_MPU} position="sidebar-mpu" />
                   <div className="border border-rule p-6">
                     <h3 className="eyebrow text-ink-muted mb-4">Can't find what you need?</h3>
                     <p className="text-sm text-ink-muted leading-relaxed mb-4">

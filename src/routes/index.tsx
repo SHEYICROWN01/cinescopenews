@@ -94,13 +94,13 @@ function Home() {
               </section>
             )}
             <div className="reveal">
-              <AdSlot format="leaderboard" slot={AD_SLOTS.LEADERBOARD_TOP} label />
+              <AdSlot format="leaderboard" slot={AD_SLOTS.LEADERBOARD_TOP} position="leaderboard-top" label />
             </div>
             {categoryGroups.map((group, gi) => (
               <div key={group.slug}>
                 <section className="reveal"><CategorySection group={group} /></section>
                 {(gi + 1) % 2 === 0 && (
-                  <div className="mt-10 reveal"><AdSlot format="in-article" slot={AD_SLOTS.ARTICLE_IN_CONTENT} label /></div>
+                  <div className="mt-10 reveal"><AdSlot format="in-article" slot={AD_SLOTS.ARTICLE_IN_CONTENT} position="article-in-content" label /></div>
                 )}
               </div>
             ))}
@@ -110,10 +110,10 @@ function Home() {
           <aside className="col-span-12 lg:col-span-4">
             <div className="lg:sticky lg:top-24 space-y-10">
               <TrendingBlock articles={trending} />
-              <AdSlot format="mpu" slot={AD_SLOTS.HOMEPAGE_MPU_1} label />
+              <AdSlot format="mpu" slot={AD_SLOTS.HOMEPAGE_MPU_1} position="homepage-mpu-1" label />
               <MostReadBlock articles={mostRead} />
               <NewsletterCard />
-              <AdSlot format="mpu" slot={AD_SLOTS.HOMEPAGE_MPU_2} label />
+              <AdSlot format="mpu" slot={AD_SLOTS.HOMEPAGE_MPU_2} position="homepage-mpu-2" label />
             </div>
           </aside>
         </div>

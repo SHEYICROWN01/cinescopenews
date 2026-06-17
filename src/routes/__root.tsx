@@ -22,6 +22,12 @@ import { ADSENSE_CLIENT, AD_SLOTS } from "@/lib/ads";
 import { getPublicCategories } from "../fns/categories";
 import { getBreakingTitles } from "../fns/articles";
 import { trackPageViewFn } from "../fns/analytics";
+import { getActiveAdsFn } from "../fns/ads";
+import { createContext, useContext } from "react";
+
+export type ActiveAd = { id: number; title: string; advertiser: string; imageUrl: string; linkUrl: string; position: string };
+export const AdsContext = createContext<ActiveAd[]>([]);
+export function useAds() { return useContext(AdsContext); }
 
 function getOrCreateSessionId(): string {
   try {
@@ -96,13 +102,14 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   loader: async () => {
     try {
-      const [categories, breakingTitles] = await Promise.all([
+      const [categories, breakingTitles, activeAds] = await Promise.all([
         getPublicCategories(),
         getBreakingTitles(),
+        getActiveAdsFn().catch(() => [] as ActiveAd[]),
       ]);
-      return { categories, breakingTitles };
+      return { categories, breakingTitles, activeAds };
     } catch {
-      return { categories: [] as Awaited<ReturnType<typeof getPublicCategories>>, breakingTitles: [] as string[] };
+      return { categories: [] as Awaited<ReturnType<typeof getPublicCategories>>, breakingTitles: [] as string[], activeAds: [] as ActiveAd[] };
     }
   },
   head: () => ({
@@ -237,7 +244,7 @@ gtag('config','${GA_ID}',{page_path:window.location.pathname});
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const { categories, breakingTitles } = Route.useLoaderData();
+  const { categories, breakingTitles, activeAds } = Route.useLoaderData();
   const router = useRouter();
 
   const isManagementPortal = router.state.location.pathname.startsWith('/management-portal');
@@ -267,6 +274,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+    <AdsContext.Provider value={activeAds}>
       <div className="min-h-screen flex flex-col bg-background text-ink">
         <MarketTicker />
         <Header categories={categories} />
@@ -277,13 +285,14 @@ function RootComponent() {
         </main>
         <div className="border-t border-rule bg-surface/40">
           <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-4">
-            <AdSlot format="leaderboard" slot={AD_SLOTS.FOOTER_LEADERBOARD} label />
+            <AdSlot format="leaderboard" slot={AD_SLOTS.FOOTER_LEADERBOARD} position="footer-leaderboard" label />
           </div>
         </div>
         <Footer categories={categories} />
         <BackToTop />
         <CookieBanner />
       </div>
+    </AdsContext.Provider>
     </QueryClientProvider>
   );
 }

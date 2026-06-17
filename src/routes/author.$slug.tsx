@@ -93,7 +93,7 @@ function AuthorPage() {
                 <ArticleCard key={article.slug} article={article} />
                 {(i + 1) % 6 === 0 && i < articles.length - 1 && (
                   <div key={`ad-${i}`} className="md:col-span-2">
-                    <AdSlot format="leaderboard" slot={AD_SLOTS.LEADERBOARD_TOP} />
+                    <AdSlot format="leaderboard" slot={AD_SLOTS.LEADERBOARD_TOP} position="leaderboard-top" />
                   </div>
                 )}
               </>
@@ -104,7 +104,7 @@ function AuthorPage() {
         {/* Sidebar */}
         <aside className="col-span-12 lg:col-span-4">
           <div className="lg:sticky lg:top-28">
-            <AdSlot format="mpu" slot={AD_SLOTS.SIDEBAR_MPU} />
+            <AdSlot format="mpu" slot={AD_SLOTS.SIDEBAR_MPU} position="sidebar-mpu" />
           </div>
         </aside>
 

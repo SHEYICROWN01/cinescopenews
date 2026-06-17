@@ -71,6 +71,26 @@ export const pageViews = sqliteTable("page_views", {
   createdAt: text("created_at").notNull().default(sql`(datetime('now'))`),
 });
 
+export const advertisements = sqliteTable("advertisements", {
+  id:          integer("id").primaryKey({ autoIncrement: true }),
+  title:       text("title").notNull().default(""),
+  advertiser:  text("advertiser").notNull().default(""),
+  imageUrl:    text("image_url").notNull().default(""),
+  linkUrl:     text("link_url").notNull().default(""),
+  position:    text("position").notNull(),
+  status:      text("status").notNull().default("active"),
+  startDate:   text("start_date"),
+  endDate:     text("end_date"),
+  clicks:      integer("clicks").notNull().default(0),
+  impressions: integer("impressions").notNull().default(0),
+  notes:       text("notes").default(""),
+  createdAt:   text("created_at").notNull().default(sql`(datetime('now'))`),
+  updatedAt:   text("updated_at").notNull().default(sql`(datetime('now'))`),
+});
+
+export type Advertisement    = typeof advertisements.$inferSelect;
+export type NewAdvertisement = typeof advertisements.$inferInsert;
+
 export type PageView    = typeof pageViews.$inferSelect;
 
 export type Category    = typeof categories.$inferSelect;

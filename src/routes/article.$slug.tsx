@@ -354,7 +354,7 @@ function ArticlePage() {
               </div>
             )}
 
-            <AdSlot format="leaderboard" slot={AD_SLOTS.ARTICLE_AFTER_BODY} className="my-14" />
+            <AdSlot format="leaderboard" slot={AD_SLOTS.ARTICLE_AFTER_BODY} position="article-after-body" className="my-14" />
 
             <CommentSection articleId={article.id} initialComments={articleComments} />
           </div>
@@ -382,7 +382,7 @@ function ArticlePage() {
                 </div>
               )}
               <NewsletterCard />
-              <AdSlot format="mpu" slot={AD_SLOTS.SIDEBAR_MPU} />
+              <AdSlot format="mpu" slot={AD_SLOTS.SIDEBAR_MPU} position="sidebar-mpu" />
             </div>
           </aside>
         </div>
@@ -614,7 +614,7 @@ function ArticleBody({ html, slot }: { html: string; slot: string }) {
             dangerouslySetInnerHTML={{ __html: chunk }}
           />
           {i < chunks.length - 1 && (
-            <AdSlot format="in-article" slot={slot} label />
+            <AdSlot format="in-article" slot={slot} position="article-in-content" label />
           )}
         </div>
       ))}
