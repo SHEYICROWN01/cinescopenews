@@ -14,9 +14,9 @@ export const Route = createFileRoute("/contact")({
 });
 
 const FAQS = [
-  { q: "How do I send a confidential news tip?", a: "We accept tips via encrypted email at tips@cinescopeglobal.com or through our SecureDrop instance. We protect our sources." },
-  { q: "Do you accept guest opinion pieces?", a: "Yes — submissions to our Opinion section can be sent to opinion@cinescopeglobal.com with a brief author bio." },
-  { q: "How can I advertise with Cinescope Global Concept?", a: "Our media kit is available on request. Contact advertise@cinescopeglobal.com to receive rate cards and audience data." },
+  { q: "How do I send a confidential news tip?", a: "We accept tips via encrypted email at tips@cinescopenews.com.ng or through our SecureDrop instance. We protect our sources." },
+  { q: "Do you accept guest opinion pieces?", a: "Yes — submissions to our Opinion section can be sent to opinion@cinescopenews.com.ng with a brief author bio." },
+  { q: "How can I advertise with Cinescope Global Concept?", a: "Our media kit is available on request. Contact advertise@cinescopenews.com.ng to receive rate cards and audience data." },
   { q: "Where are your offices located?", a: "Our headquarters are in Victoria Island, Lagos, with bureaux in Abuja, Port Harcourt, and London." },
 ];
 
@@ -103,7 +103,7 @@ function ContactPage() {
               {
                 Icon: Mail,
                 title: "Email",
-                body: <>Newsroom: news@cinescopeglobal.com<br />Tips: tips@cinescopeglobal.com<br />Advertising: advertise@cinescopeglobal.com</>,
+                body: <>Newsroom: news@cinescopenews.com.ng<br />Tips: tips@cinescopenews.com.ng<br />Advertising: advertise@cinescopenews.com.ng</>,
               },
               {
                 Icon: Phone,

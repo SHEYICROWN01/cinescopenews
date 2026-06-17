@@ -154,7 +154,7 @@ function AuthorFormPanel({
           <div>
             <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Email Address</label>
             <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)}
-              placeholder="author@cinescopeglobal.com" className={field} />
+              placeholder="author@cinescopenews.com.ng" className={field} />
           </div>
 
           {/* Bio */}

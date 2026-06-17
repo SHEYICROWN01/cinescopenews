@@ -18,7 +18,7 @@ function ArticlesPage() {
   const [copiedId, setCopiedId] = useState<number | null>(null);
 
   function handleCopyLink(id: number, slug: string) {
-    const url = `https://www.cinescopeglobal.com/article/${slug}`;
+    const url = `https://www.cinescopenews.com.ng/article/${slug}`;
     navigator.clipboard.writeText(url).then(() => {
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
@@ -195,7 +195,7 @@ function ArticlesPage() {
                         {article.status === "published" && article.slug && (
                           <>
                             <a
-                              href={`https://www.cinescopeglobal.com/article/${article.slug}`}
+                              href={`https://www.cinescopenews.com.ng/article/${article.slug}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"

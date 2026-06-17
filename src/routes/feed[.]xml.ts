@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { articles, categories } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 
-const BASE_URL  = "https://www.cinescopeglobal.com";
+const BASE_URL  = "https://www.cinescopenews.com.ng";
 const SITE_NAME = "Cinescope Global Concept";
 const SITE_DESC = "Bold investigative journalism, in-depth analysis, and global news coverage from Cinescope Global Concept.";
 
@@ -71,7 +71,7 @@ export const Route = createFileRoute("/feed.xml")({
             `      <link>${link}</link>`,
             `      <guid isPermaLink="true">${link}</guid>`,
             `      <pubDate>${pubDate}</pubDate>`,
-            `      <author>editors@cinescopeglobal.com (${escapeXml(a.author ?? "Cinescope Global Concept")})</author>`,
+            `      <author>editors@cinescopenews.com.ng (${escapeXml(a.author ?? "Cinescope Global Concept")})</author>`,
             category,
             `      <description>${desc}</description>`,
             image,

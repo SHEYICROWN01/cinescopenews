@@ -686,7 +686,7 @@ function EditArticlePage() {
             </button>
             {isPublished && article.slug && (
               <a
-                href={`https://www.cinescopeglobal.com/article/${article.slug}`}
+                href={`https://www.cinescopenews.com.ng/article/${article.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"

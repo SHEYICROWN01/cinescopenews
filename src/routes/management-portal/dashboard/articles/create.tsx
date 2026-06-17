@@ -1007,7 +1007,7 @@ function CreateArticlePage() {
                 <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
                   <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Search Preview</p>
                   <p className="text-sm text-blue-700 font-medium leading-tight truncate">{seoTitle || title}</p>
-                  <p className="text-xs text-green-700 mt-0.5">cinescopeglobal.com › article</p>
+                  <p className="text-xs text-green-700 mt-0.5">cinescopenews.com.ng › article</p>
                   <p className="text-xs text-gray-600 mt-1 line-clamp-2">{seoDescription || subtitle || "No description set."}</p>
                 </div>
               )}

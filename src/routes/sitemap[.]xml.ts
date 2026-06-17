@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { articles, categories } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 
-const BASE_URL = "https://www.cinescopeglobal.com";
+const BASE_URL = "https://www.cinescopenews.com.ng";
 
 function toW3CDate(dateStr: string | null | undefined): string {
   if (!dateStr) return new Date().toISOString().split("T")[0];

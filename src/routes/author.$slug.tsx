@@ -25,7 +25,7 @@ export const Route = createFileRoute("/author/$slug")({
       links: [
         {
           rel: "canonical",
-          href: `https://www.cinescopeglobal.com/author/${loaderData?.articles[0]
+          href: `https://www.cinescopenews.com.ng/author/${loaderData?.articles[0]
             ? nameToSlug(loaderData.authorName)
             : ""}`,
         },

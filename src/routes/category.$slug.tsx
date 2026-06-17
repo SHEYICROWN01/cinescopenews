@@ -39,7 +39,7 @@ export const Route = createFileRoute("/category/$slug")({
       links: [
         {
           rel: "canonical",
-          href: `https://www.cinescopeglobal.com/category/${cat?.slug ?? ""}${page > 1 ? `?page=${page}` : ""}`,
+          href: `https://www.cinescopenews.com.ng/category/${cat?.slug ?? ""}${page > 1 ? `?page=${page}` : ""}`,
         },
       ],
     };

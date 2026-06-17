@@ -26,7 +26,7 @@ function parseSource(referrer: string): string {
   if (!referrer) return "Direct";
   try {
     const host = new URL(referrer).hostname.toLowerCase();
-    if (host.includes("cinescopeglobal.com")) return "Direct";
+    if (host.includes("cinescopenews.com.ng")) return "Direct";
     if (host.includes("google."))       return "Google";
     if (host.includes("bing.com"))      return "Bing";
     if (host.includes("yahoo.com"))     return "Yahoo";

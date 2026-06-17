@@ -185,7 +185,7 @@ function LoginPage() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="editor@cinescopeglobal.com"
+                  placeholder="editor@cinescopenews.com.ng"
                   className="w-full pl-11 pr-4 py-3.5 text-sm outline-none transition-all"
                   style={{
                     background: "white",

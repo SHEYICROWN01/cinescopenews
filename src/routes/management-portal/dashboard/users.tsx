@@ -288,7 +288,7 @@ function AddUserModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: 
           <input className={inputCls} required value={name} onChange={(e) => setName(e.target.value)} placeholder="Adebayo Johnson" />
         </Field>
         <Field label="Email Address">
-          <input className={inputCls} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="editor@cinescopeglobal.com" />
+          <input className={inputCls} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="editor@cinescopenews.com.ng" />
         </Field>
         <Field label="Password">
           <div className="relative">

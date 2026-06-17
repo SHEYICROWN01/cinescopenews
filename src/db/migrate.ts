@@ -146,7 +146,7 @@ async function migrate() {
   const count = Number((existing.rows[0] as unknown as { cnt: number }).cnt);
 
   if (count === 0) {
-    const email    = process.env.ADMIN_EMAIL    ?? "admin@cinescopeglobal.com";
+    const email    = process.env.ADMIN_EMAIL    ?? "admin@cinescopenews.com.ng";
     const password = process.env.ADMIN_PASSWORD ?? "Cinescope@Admin2026";
 
     const enc  = new TextEncoder();

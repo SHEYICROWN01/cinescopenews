@@ -24,7 +24,7 @@ export const Route = createFileRoute("/tag/$tag")({
         },
         {
           rel: "canonical",
-          href: `https://www.cinescopeglobal.com/tag/${tag}`,
+          href: `https://www.cinescopenews.com.ng/tag/${tag}`,
         },
       ],
     };

@@ -17,10 +17,10 @@ export const Route = createFileRoute("/article/$slug")({
   head: ({ loaderData }) => {
     const a = (loaderData as (LoaderResult & { articleComments: ArticleComment[] }) | undefined)?.article;
     if (!a) return { meta: [{ title: "Article — Cinescope Global Concept" }] };
-    const pageUrl = `https://www.cinescopeglobal.com/article/${a.slug}`;
+    const pageUrl = `https://www.cinescopenews.com.ng/article/${a.slug}`;
     const ogImage = a.featuredImage
-      ? (a.featuredImage.startsWith("http") ? a.featuredImage : `https://www.cinescopeglobal.com${a.featuredImage}`)
-      : "https://www.cinescopeglobal.com/logo.png";
+      ? (a.featuredImage.startsWith("http") ? a.featuredImage : `https://www.cinescopenews.com.ng${a.featuredImage}`)
+      : "https://www.cinescopenews.com.ng/logo.png";
     return {
       meta: [
         { title: `${a.title} — Cinescope Global Concept` },
@@ -44,7 +44,7 @@ export const Route = createFileRoute("/article/$slug")({
       links: [
         {
           rel: "canonical",
-          href: `https://www.cinescopeglobal.com/article/${a.slug}`,
+          href: `https://www.cinescopenews.com.ng/article/${a.slug}`,
         },
       ],
       scripts: [
@@ -55,7 +55,7 @@ export const Route = createFileRoute("/article/$slug")({
             "@graph": [
               {
                 "@type": "NewsArticle",
-                "@id": `https://www.cinescopeglobal.com/article/${a.slug}#article`,
+                "@id": `https://www.cinescopenews.com.ng/article/${a.slug}#article`,
                 headline: a.title,
                 description: a.subtitle ?? a.title,
                 image: a.featuredImage ? [a.featuredImage] : [],
@@ -66,11 +66,11 @@ export const Route = createFileRoute("/article/$slug")({
                   name: a.author ?? "Cinescope Global Concept Editorial",
                 },
                 publisher: {
-                  "@id": "https://www.cinescopeglobal.com/#organization",
+                  "@id": "https://www.cinescopenews.com.ng/#organization",
                 },
                 mainEntityOfPage: {
                   "@type": "WebPage",
-                  "@id": `https://www.cinescopeglobal.com/article/${a.slug}`,
+                  "@id": `https://www.cinescopenews.com.ng/article/${a.slug}`,
                 },
                 ...(a.categoryName && {
                   articleSection: a.categoryName,
@@ -86,7 +86,7 @@ export const Route = createFileRoute("/article/$slug")({
                     "@type": "ListItem",
                     position: 1,
                     name: "Home",
-                    item: "https://www.cinescopeglobal.com",
+                    item: "https://www.cinescopenews.com.ng",
                   },
                   ...(a.categoryName && a.categorySlug
                     ? [
@@ -94,13 +94,13 @@ export const Route = createFileRoute("/article/$slug")({
                           "@type": "ListItem",
                           position: 2,
                           name: a.categoryName,
-                          item: `https://www.cinescopeglobal.com/category/${a.categorySlug}`,
+                          item: `https://www.cinescopenews.com.ng/category/${a.categorySlug}`,
                         },
                         {
                           "@type": "ListItem",
                           position: 3,
                           name: a.title,
-                          item: `https://www.cinescopeglobal.com/article/${a.slug}`,
+                          item: `https://www.cinescopenews.com.ng/article/${a.slug}`,
                         },
                       ]
                     : [
@@ -108,7 +108,7 @@ export const Route = createFileRoute("/article/$slug")({
                           "@type": "ListItem",
                           position: 2,
                           name: a.title,
-                          item: `https://www.cinescopeglobal.com/article/${a.slug}`,
+                          item: `https://www.cinescopenews.com.ng/article/${a.slug}`,
                         },
                       ]),
                 ],
@@ -137,7 +137,7 @@ export const Route = createFileRoute("/article/$slug")({
 function ArticlePage() {
   const { article, related, readAlsoArticles, articleComments } = Route.useLoaderData() as LoaderResult & { articleComments: ArticleComment[] };
   const [progress, setProgress] = useState(0);
-  const articleUrl = `https://www.cinescopeglobal.com/article/${article.slug}`;
+  const articleUrl = `https://www.cinescopenews.com.ng/article/${article.slug}`;
 
   const wordCount = (article.content ?? "").replace(/<[^>]*>/g, " ").split(/\s+/).filter(Boolean).length;
   const readTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;

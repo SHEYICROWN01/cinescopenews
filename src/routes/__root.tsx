@@ -144,12 +144,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@graph": [
             {
               "@type": "Organization",
-              "@id": "https://www.cinescopeglobal.com/#organization",
+              "@id": "https://www.cinescopenews.com.ng/#organization",
               name: "Cinescope Global Concept",
-              url: "https://www.cinescopeglobal.com",
+              url: "https://www.cinescopenews.com.ng",
               logo: {
                 "@type": "ImageObject",
-                url: "https://www.cinescopeglobal.com/logo.png",
+                url: "https://www.cinescopenews.com.ng/logo.png",
                 width: 200,
                 height: 60,
               },
@@ -160,16 +160,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             },
             {
               "@type": "WebSite",
-              "@id": "https://www.cinescopeglobal.com/#website",
-              url: "https://www.cinescopeglobal.com",
+              "@id": "https://www.cinescopenews.com.ng/#website",
+              url: "https://www.cinescopenews.com.ng",
               name: "Cinescope Global Concept",
               description: "Bold investigative journalism and global news coverage.",
-              publisher: { "@id": "https://www.cinescopeglobal.com/#organization" },
+              publisher: { "@id": "https://www.cinescopenews.com.ng/#organization" },
               potentialAction: {
                 "@type": "SearchAction",
                 target: {
                   "@type": "EntryPoint",
-                  urlTemplate: "https://www.cinescopeglobal.com/search?q={search_term_string}",
+                  urlTemplate: "https://www.cinescopenews.com.ng/search?q={search_term_string}",
                 },
                 "query-input": "required name=search_term_string",
               },
@@ -187,7 +187,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "alternate",
         type: "application/rss+xml",
         title: "Cinescope Global Concept RSS Feed",
-        href: "https://www.cinescopeglobal.com/feed.xml",
+        href: "https://www.cinescopenews.com.ng/feed.xml",
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
