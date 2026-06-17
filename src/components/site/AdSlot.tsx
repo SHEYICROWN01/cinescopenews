@@ -37,13 +37,13 @@ function CustomAdBanner({ ad, size, label }: {
   }, [ad.id]);
 
   return (
-    <aside aria-label="Advertisement" className="my-8 flex flex-col items-center">
+    <aside aria-label="Advertisement" className="my-8 flex flex-col items-center w-full">
       {label && <span className="eyebrow text-ink-muted mb-2 tracking-[0.22em] text-[10px]">Advertisement</span>}
       <a
         href={ad.linkUrl}
         target="_blank"
         rel="noopener noreferrer sponsored"
-        className={`block overflow-hidden relative group ${size.className}`}
+        className="block relative group w-full max-w-[970px] mx-auto"
         onClick={() => trackAdClickFn({ data: { id: ad.id } }).catch(() => {})}
         aria-label={`Advertisement: ${ad.title || ad.advertiser}`}
       >
@@ -52,13 +52,13 @@ function CustomAdBanner({ ad, size, label }: {
             <img
               src={ad.imageUrl}
               alt={ad.title || ad.advertiser}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              className="w-full h-auto block transition-opacity duration-300 group-hover:opacity-90"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300 pointer-events-none" />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
           </>
         ) : (
-          <div className="w-full h-full bg-surface border border-dashed border-rule flex flex-col items-center justify-center gap-1 text-ink-muted">
+          <div className="w-full py-10 bg-surface border border-dashed border-rule flex flex-col items-center justify-center gap-1 text-ink-muted">
             <span className="font-display text-sm font-bold">{ad.advertiser}</span>
             <span className="eyebrow text-xs">{ad.title}</span>
           </div>
