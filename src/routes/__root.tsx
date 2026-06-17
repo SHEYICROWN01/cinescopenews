@@ -126,6 +126,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@CinescopeGlobal" },
       { name: "twitter:title", content: "Cinescope Global Concept — Bold. Global. Investigative." },
       { name: "twitter:description", content: "Bold investigative journalism and in-depth analysis from Cinescope Global Concept." },
+      { name: "google-adsense-account", content: "ca-pub-9903518567368943" },
     ],
     scripts: [
       ...(ADSENSE_CLIENT

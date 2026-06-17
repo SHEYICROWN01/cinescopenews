@@ -8,7 +8,7 @@
  *  4. Set VITE_AD_SLOT_* for each unit in your .env
  */
 
-export const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT ?? "";
+export const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT ?? "ca-pub-9903518567368943";
 
 export const AD_SLOTS = {
   LEADERBOARD_TOP:     import.meta.env.VITE_AD_SLOT_LEADERBOARD_TOP     ?? "",
